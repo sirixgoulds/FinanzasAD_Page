@@ -1,0 +1,1021 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financiero - Finanzas</title>
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para los gráficos dinámicos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2canvas para exportar Imagen -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- FontAwesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',     // Azul Oscuro Principal
+                            gold: '#e7d060',     // Dorado/Amarillo
+                            green: '#51832f',    // Verde
+                            bronze: '#b68d24',   // Bronce/Dorado Oscuro
+                            black: '#000000',    // Negro
+                            darkbg: '#111b29',   // Tono más oscuro de fondo para contrastar
+                        },
+                        brand: {
+                            dark: '#0B132B',    // Azul marino muy oscuro
+                            primary: '#1C2541', // Azul corporativo
+                            accent: '#F59E0B',  // Dorado/Ambar
+                            light: '#F3F4F6'
+                        },
+                        cat: {
+                            ingreso: '#10B981',      // Verde
+                            fijo: '#EF4444',         // Rojo
+                            esencial: '#F59E0B',     // Naranja/Amarillo
+                            inversion: '#3B82F6',    // Azul
+                            noesencial: '#8B5CF6'    // Morado
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base para scrollbar y canvas */
+        body {
+            background-color: #F3F4F6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .glass-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <!-- Si tienes el logo como imagen, puedes usar esta etiqueta y ocultar el texto: -->
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación y
+                            Educación Financiera</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html#inicio"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="index.html#servicios"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="index.html#nosotros"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre Mí</a>
+
+
+                    <!-- Desplegable Contacto -->
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Contacto <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+
+                        <!-- Dropdown Menu Contacto -->
+                        <div
+                            class="absolute left-0 top-full w-64 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                                    target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </div>
+                                    Instagram
+                                </a>
+                                <a href="https://wa.me/+543513110183" target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:finanzasaldente@gmail.com"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    Email
+                                </a>
+                                <a href="contacto.html"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    Formulario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Contenedor Derecho Escritorio -->
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4">
+                    <div class="text-sm text-slate-300 mr-2">
+                        <i class="fa-regular fa-calendar mr-2"></i><span id="currentDate"></span>
+                    </div>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center gap-4">
+                    <div class="text-sm text-slate-300 hidden sm:block">
+                        <i class="fa-regular fa-calendar mr-2"></i><span id="currentDateMobile"></span>
+                    </div>
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl absolute w-full left-0 top-full z-50">
+            <div class="px-4 pt-2 pb-6 space-y-2 bg-ad-blue/95 backdrop-blur-md">
+                <a href="index.html#inicio"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="index.html#servicios"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Servicios</a>
+                <a href="index.html#nosotros"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+
+                
+                <!-- Desplegable Contacto Móvil -->
+                <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-contacto-menu').classList.toggle('hidden')">
+                        Contacto
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-contacto-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-instagram mr-2 text-ad-gold"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/+543513110183" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-whatsapp mr-2 text-ad-gold"></i> WhatsApp
+                        </a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-envelope mr-2 text-ad-gold"></i> Email
+                        </a>
+                        <a href="contacto.html"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-file-signature mr-2 text-ad-gold"></i> Formulario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full flex flex-col gap-6">
+
+        <!-- Acciones Principales -->
+        <div class="glass-card p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <h2 class="text-lg font-bold text-brand-primary">Acciones</h2>
+                <button onclick="clearData()"
+                    class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 px-3 rounded-lg transition-colors flex items-center gap-2 text-xs shadow-sm"
+                    title="Limpiar todos los datos">
+                    <i class="fa-solid fa-trash-can"></i> Limpiar
+                </button>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <label
+                    class="cursor-pointer bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2 text-sm shadow-sm">
+                    <i class="fa-solid fa-file-import"></i> Cargar Config (.dat)
+                    <input type="file" accept=".dat" class="hidden" onchange="loadDat(event)">
+                </label>
+                <button onclick="downloadDat()"
+                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2 text-sm shadow-sm">
+                    <i class="fa-solid fa-file-export"></i> Descargar Config (.dat)
+                </button>
+                <button onclick="generateImage(event)"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2 text-sm shadow-sm">
+                    <i class="fa-solid fa-image"></i> Descargar Imagen
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Left Column: Inputs & Tables (Span 5) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+
+                <!-- Input Form -->
+                <div class="glass-card p-6 border-t-4 border-t-brand-accent">
+                    <h2 class="text-lg font-bold text-brand-primary mb-4 border-b pb-2">Registrar Movimiento</h2>
+                    <form id="financeForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600 mb-1">Concepto / Categoría</label>
+                            <select id="category"
+                                class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition-all">
+                                <option value="ingreso">1. Ingresos (Sueldo, Extras)</option>
+                                <option value="fijo">2. Gastos Fijos (Impuestos, Alquiler)</option>
+                                <option value="esencial">3. Gastos V. Esenciales (Comida, Salud)</option>
+                                <option value="inversion">4. Me pago a mí mismo (Inversión)</option>
+                                <option value="noesencial">5. Gastos No Esenciales (Salidas, Regalos)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600 mb-1">Descripción</label>
+                            <input type="text" id="description" placeholder="Ej. Alquiler de Octubre" required
+                                class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-accent outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600 mb-1">Monto ($)</label>
+                            <input type="number" id="amount" placeholder="0.00" min="0.01" step="0.01" required
+                                class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-accent outline-none">
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-brand-primary hover:bg-brand-dark text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Agregar a la tabla
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Dynamic Summary Table -->
+                <div class="glass-card p-0 overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b">
+                        <h2 class="text-lg font-bold text-brand-primary">Tabla Dinámica - Resumen</h2>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 text-sm">
+                                <th class="p-3 border-b font-semibold">Categoría</th>
+                                <th class="p-3 border-b font-semibold text-right">Total</th>
+                                <th class="p-3 border-b font-semibold text-right">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="text-sm">
+                            <!-- Llenado por JS -->
+                        </tbody>
+                        <tfoot class="bg-slate-50 font-bold border-t">
+                            <tr>
+                                <td class="p-3 text-slate-700">BALANCE (Ingresos - Egresos)</td>
+                                <td class="p-3 text-right text-brand-primary" id="totalBalance">$0.00</td>
+                                <td class="p-3"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="glass-card p-4">
+                    <h2 class="text-sm font-bold text-slate-500 mb-3 uppercase tracking-wider">Movimientos por Categoría
+                    </h2>
+                    <div class="max-h-96 overflow-y-auto pr-2 relative" id="transactionsList">
+                        <!-- Llenado por JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Charts (Span 7) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="glass-card p-5 border-l-4 border-l-cat-ingreso flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-semibold mb-1">Ingreso Total</p>
+                            <h3 class="text-2xl font-bold text-slate-800" id="metricIncome">$0.00</h3>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-cat-ingreso">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5 border-l-4 border-l-cat-fijo flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-semibold mb-1">Gasto Total</p>
+                            <h3 class="text-2xl font-bold text-slate-800" id="metricExpense">$0.00</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-cat-fijo">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="glass-card p-5 border-l-4 border-l-brand-accent flex items-center justify-between shadow-md bg-gradient-to-br from-white to-slate-50">
+                        <div>
+                            <p class="text-sm text-slate-500 font-semibold mb-1">Saldo Disponible</p>
+                            <h3 class="text-2xl font-bold text-slate-800" id="metricBalance">$0.00</h3>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-brand-accent">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Container -->
+                <div class="glass-card p-6 flex-grow flex flex-col">
+                    <h2 class="text-lg font-bold text-brand-primary mb-6 border-b pb-2">Visualización Dinámica</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
+                        <!-- Pie Chart -->
+                        <div class="flex flex-col items-center h-auto min-h-[350px]">
+                            <h3 class="text-sm font-semibold text-slate-500 mb-2 text-center">Distribución de Salidas
+                            </h3>
+                            <div class="relative w-full h-[250px] flex-grow">
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                            <div id="pieLegend" class="mt-6 flex flex-col gap-3 w-full max-w-[250px] mx-auto"></div>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <div class="flex flex-col items-center h-64 md:h-auto min-h-[250px]">
+                            <h3 class="text-sm font-semibold text-slate-500 mb-2 text-center">Ingresos vs Gastos
+                                Apilados</h3>
+                            <div class="relative w-full h-full flex-grow">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End Grid -->
+    </main>
+
+    <!-- Contenedor Oculto para el Reporte PDF -->
+    <div id="pdf-report-container"
+        style="display: none; width: 1122px; background: white; padding: 20px; font-family: sans-serif; color: #000; position: absolute; top: 0; left: 0; z-index: 10000; pointer-events: none; overflow: visible; height: auto;">
+        <h1 style="text-align: center; color: #1e293b; margin-bottom: 20px; font-size: 24px;">Reporte Financiero -
+            Finanzas Alan Dente</h1>
+
+        <!-- Metricas: Ingreso, Gasto Total, Saldo -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <div
+                style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; flex: 1; margin: 0 5px; border-left: 4px solid #10B981;">
+                <p style="margin:0; font-size: 14px; color: #64748b;">Ingreso Total</p>
+                <h3 style="margin:0; font-size: 20px; color: #1e293b;" id="pdf-ingreso">$0.00</h3>
+            </div>
+            <div
+                style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; flex: 1; margin: 0 5px; border-left: 4px solid #EF4444;">
+                <p style="margin:0; font-size: 14px; color: #64748b;">Gasto Total</p>
+                <h3 style="margin:0; font-size: 20px; color: #1e293b;" id="pdf-gasto">$0.00</h3>
+            </div>
+            <div
+                style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; flex: 1; margin: 0 5px; border-left: 4px solid #F59E0B;">
+                <p style="margin:0; font-size: 14px; color: #64748b;">Saldo Disponible</p>
+                <h3 style="margin:0; font-size: 20px; color: #1e293b;" id="pdf-saldo">$0.00</h3>
+            </div>
+        </div>
+
+        <!-- Gastos por categoría -->
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin-top: 0; margin-bottom: 10px; color: #1e293b; font-size: 16px;">Gasto Total por Categoría
+            </h4>
+            <div style="display: flex; gap: 10px;" id="pdf-gastos-cat">
+                <!-- llenado por JS -->
+            </div>
+        </div>
+
+        <!-- Graficos -->
+        <div
+            style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px; height: 300px;">
+            <div style="flex: 1; text-align: center; height: 100%;">
+                <h4 style="margin-top: 0; margin-bottom: 10px; font-size: 14px;">Distribución</h4>
+                <img id="pdf-chart-pie" style="max-height: 250px; width: auto; display: inline-block;">
+            </div>
+            <div style="flex: 1; text-align: center; height: 100%;">
+                <h4 style="margin-top: 0; margin-bottom: 10px; font-size: 14px;">Ingresos vs Gastos</h4>
+                <img id="pdf-chart-bar" style="max-height: 250px; width: auto; display: inline-block;">
+            </div>
+        </div>
+
+        <!-- 5 Tablas -->
+        <div id="pdf-tables" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <!-- llenado por JS -->
+        </div>
+    </div>
+
+    <script>
+        // Formateador de moneda
+        const formatter = new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+
+        // Configuración de categorías y colores
+        const categoriesConfig = {
+            'ingreso': { label: '1. Ingresos', color: '#10B981', type: 'in' },
+            'fijo': { label: '2. Gastos Fijos', color: '#EF4444', type: 'out' },
+            'esencial': { label: '3. G. Esenciales', color: '#F59E0B', type: 'out' },
+            'inversion': { label: '4. Inversión (Yo)', color: '#3B82F6', type: 'out' },
+            'noesencial': { label: '5. No Esenciales', color: '#8B5CF6', type: 'out' }
+        };
+
+        // Estado inicial de la aplicación (Datos de ejemplo para que no esté vacío en el video)
+        let transactions = [
+            { id: 1, desc: 'Sueldo Mensual', amount: 1000000, cat: 'ingreso', date: new Date().toISOString() },
+            { id: 2, desc: 'Alquiler', amount: 250000, cat: 'fijo', date: new Date().toISOString() },
+            { id: 3, desc: 'Supermercado', amount: 150000, cat: 'esencial', date: new Date().toISOString() },
+            { id: 4, desc: 'Compra SP500', amount: 100000, cat: 'inversion', date: new Date().toISOString() },
+            { id: 5, desc: 'Cena Restaurante', amount: 40000, cat: 'noesencial', date: new Date().toISOString() }
+        ];
+
+        // Instancias de Chart.js
+        let pieChart, barChart;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setear fecha
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('es-ES', options);
+            if (document.getElementById('currentDate')) document.getElementById('currentDate').textContent = todayStr;
+            if (document.getElementById('currentDateMobile')) document.getElementById('currentDateMobile').textContent = todayStr;
+
+            // Menú Móvil
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            initCharts();
+            updateDashboard();
+
+            // Event listener del formulario
+            document.getElementById('financeForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                addTransaction();
+            });
+        });
+
+        function addTransaction() {
+            const cat = document.getElementById('category').value;
+            const desc = document.getElementById('description').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (desc && amount > 0) {
+                const newTx = {
+                    id: Date.now(),
+                    desc: desc,
+                    amount: amount,
+                    cat: cat,
+                    date: new Date().toISOString()
+                };
+
+                transactions.push(newTx);
+
+                // Limpiar formulario
+                document.getElementById('description').value = '';
+                document.getElementById('amount').value = '';
+                document.getElementById('category').focus();
+
+                updateDashboard();
+            }
+        }
+
+        function deleteTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            updateDashboard();
+        }
+
+        // --- Nuevas funciones de exportación e importación ---
+        function downloadDat() {
+            const dataStr = JSON.stringify(transactions);
+            const dataBlob = new Blob([dataStr], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'configuracion_finanzas.dat';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadDat(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const loadedTxs = JSON.parse(e.target.result);
+                    if (Array.isArray(loadedTxs)) {
+                        transactions = loadedTxs;
+                        updateDashboard();
+                        alert('Configuración cargada con éxito.');
+                    } else {
+                        alert('El archivo no tiene el formato correcto.');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo. Asegúrese de que sea un archivo .dat válido.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+        }
+
+        function clearData() {
+            if (transactions.length === 0) {
+                alert("No hay datos para limpiar.");
+                return;
+            }
+            if (confirm("¿Estás seguro de que deseas eliminar TODOS los movimientos ingresados? Esta acción no se puede deshacer.")) {
+                transactions = [];
+                updateDashboard();
+            }
+        }
+
+        async function generateImage(event) {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando...';
+            btn.disabled = true;
+
+            try {
+                // 1. Llenar los datos en el template PDF
+                const totals = getTotals();
+                document.getElementById('pdf-ingreso').textContent = formatter.format(totals.ingreso);
+                document.getElementById('pdf-gasto').textContent = formatter.format(totals.totalEgresos);
+                document.getElementById('pdf-saldo').textContent = formatter.format(totals.ingreso - totals.totalEgresos);
+
+                // Gasto por categoria
+                const catContainer = document.getElementById('pdf-gastos-cat');
+                catContainer.innerHTML = '';
+                ['fijo', 'esencial', 'inversion', 'noesencial'].forEach(cat => {
+                    const div = document.createElement('div');
+                    div.style = `border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; flex: 1; border-left: 4px solid ${categoriesConfig[cat].color};`;
+                    div.innerHTML = `<p style="margin:0; font-size: 12px; color: #64748b;">${categoriesConfig[cat].label}</p>
+                                     <h4 style="margin:0; font-size: 16px; color: #1e293b;">${formatter.format(totals[cat])}</h4>`;
+                    catContainer.appendChild(div);
+                });
+
+                // 2. Gráficos a imagen
+                const pieImg = document.getElementById('pieChart').toDataURL('image/png', 1.0);
+                const barImg = document.getElementById('barChart').toDataURL('image/png', 1.0);
+                document.getElementById('pdf-chart-pie').src = pieImg;
+                document.getElementById('pdf-chart-bar').src = barImg;
+
+                // 3. Tablas
+                const tablesContainer = document.getElementById('pdf-tables');
+                tablesContainer.innerHTML = '';
+                ['ingreso', 'fijo', 'esencial', 'inversion', 'noesencial'].forEach(cat => {
+                    const txs = transactions.filter(t => t.cat === cat).sort((a, b) => b.id - a.id);
+                    let tableHTML = `
+                    <div style="break-inside: avoid; margin-bottom: 20px;">
+                        <h4 style="color: ${categoriesConfig[cat].color}; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 3px; font-size: 14px;">${categoriesConfig[cat].label}</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                            <thead>
+                                <tr style="background: #f8fafc; text-align: left;">
+                                    <th style="padding: 5px; border-bottom: 1px solid #e2e8f0;">Descripción</th>
+                                    <th style="padding: 5px; border-bottom: 1px solid #e2e8f0; text-align: right;">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    if (txs.length === 0) {
+                        tableHTML += `<tr><td colspan="2" style="padding: 5px; color: #94a3b8; font-style: italic;">Sin movimientos</td></tr>`;
+                    } else {
+                        txs.forEach(t => {
+                            tableHTML += `
+                                <tr>
+                                    <td style="padding: 5px; border-bottom: 1px solid #f1f5f9; word-break: break-word;">${t.desc}</td>
+                                    <td style="padding: 5px; border-bottom: 1px solid #f1f5f9; text-align: right;">${formatter.format(t.amount)}</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                    tableHTML += `</tbody></table></div>`;
+                    tablesContainer.innerHTML += tableHTML;
+                });
+
+                // 4. Generar Imagen
+                const element = document.getElementById('pdf-report-container');
+                element.style.display = 'block';
+
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true, scrollY: 0, scrollX: 0 });
+                const imgData = canvas.toDataURL('image/png');
+
+                const a = document.createElement('a');
+                a.href = imgData;
+                a.download = 'Reporte_Financiero_AlanDente.png';
+                a.click();
+
+                element.style.display = 'none';
+
+            } catch (err) {
+                console.error(err);
+                alert("Hubo un error al generar la imagen.");
+                document.getElementById('pdf-report-container').style.display = 'none';
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+        // -----------------------------------------------------
+
+        function getTotals() {
+            let totals = {
+                ingreso: 0, fijo: 0, esencial: 0, inversion: 0, noesencial: 0,
+                totalEgresos: 0
+            };
+
+            transactions.forEach(t => {
+                totals[t.cat] += t.amount;
+                if (categoriesConfig[t.cat].type === 'out') {
+                    totals.totalEgresos += t.amount;
+                }
+            });
+
+            return totals;
+        }
+
+        function updateDashboard() {
+            const totals = getTotals();
+
+            // Actualizar Métricas Superiores
+            document.getElementById('metricIncome').textContent = formatter.format(totals.ingreso);
+            document.getElementById('metricExpense').textContent = formatter.format(totals.totalEgresos);
+
+            // Actualizar Métrica de Saldo Disponible
+            const balance = totals.ingreso - totals.totalEgresos;
+            const metricBalanceEl = document.getElementById('metricBalance');
+            metricBalanceEl.textContent = formatter.format(balance);
+
+            // Cambiar color si el saldo es negativo
+            if (balance < 0) {
+                metricBalanceEl.classList.replace('text-slate-800', 'text-red-500');
+            } else {
+                metricBalanceEl.classList.replace('text-red-500', 'text-slate-800');
+            }
+
+            // Actualizar Tabla Resumen
+            updateSummaryTable(totals);
+
+            // Actualizar Lista de Movimientos
+            updateTransactionsList();
+
+            // Actualizar Gráficos
+            updateChartsData(totals);
+        }
+
+        function updateSummaryTable(totals) {
+            const tbody = document.getElementById('summaryTableBody');
+            tbody.innerHTML = '';
+
+            const order = ['ingreso', 'fijo', 'esencial', 'inversion', 'noesencial'];
+
+            order.forEach(catKey => {
+                const isIncome = categoriesConfig[catKey].type === 'in';
+                const amount = totals[catKey];
+
+                // Calcular porcentaje (respecto al ingreso para ahorros/gastos)
+                let percent = 0;
+                if (totals.ingreso > 0) {
+                    percent = (amount / totals.ingreso) * 100;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b hover:bg-slate-50 transition-colors';
+
+                tr.innerHTML = `
+                    <td class="p-3 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: ${categoriesConfig[catKey].color}"></span>
+                        <span class="${isIncome ? 'font-bold' : ''}">${categoriesConfig[catKey].label}</span>
+                    </td>
+                    <td class="p-3 text-right font-medium ${isIncome ? 'text-green-600' : 'text-slate-700'}">
+                        ${formatter.format(amount)}
+                    </td>
+                    <td class="p-3 text-right text-xs text-slate-500 font-mono">
+                        ${isIncome ? '100%' : percent.toFixed(1) + '%'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Balance
+            const balance = totals.ingreso - totals.totalEgresos;
+            const balanceEl = document.getElementById('totalBalance');
+            balanceEl.textContent = formatter.format(balance);
+            balanceEl.className = `p-3 text-right font-bold ${balance >= 0 ? 'text-brand-primary' : 'text-red-500'}`;
+        }
+
+        function updateTransactionsList() {
+            const list = document.getElementById('transactionsList');
+            list.innerHTML = '';
+
+            if (transactions.length === 0) {
+                list.innerHTML = '<p class="text-sm text-slate-400 italic">No hay movimientos registrados.</p>';
+                return;
+            }
+
+            // Orden de las categorías para agrupar
+            const order = ['ingreso', 'fijo', 'esencial', 'inversion', 'noesencial'];
+
+            order.forEach(catKey => {
+                // Filtrar los movimientos de esta categoría y ordenarlos por los más recientes
+                const catTxs = transactions.filter(t => t.cat === catKey).sort((a, b) => b.id - a.id);
+
+                if (catTxs.length > 0) {
+                    const conf = categoriesConfig[catKey];
+                    const isIncome = conf.type === 'in';
+
+                    // Crear cabecera de la categoría
+                    const header = document.createElement('div');
+                    header.className = 'mt-4 mb-2 pb-1 border-b-2 text-[10px] font-bold uppercase tracking-wider sticky top-0 bg-white z-10';
+                    header.style.borderColor = conf.color;
+                    header.style.color = conf.color;
+                    header.textContent = conf.label;
+
+                    // Quitar el margen superior al primer elemento
+                    if (list.children.length === 0) {
+                        header.classList.remove('mt-4');
+                    }
+
+                    list.appendChild(header);
+
+                    // Agregar los movimientos de esta categoría
+                    catTxs.forEach(t => {
+                        const div = document.createElement('div');
+                        div.className = 'flex justify-between items-center py-2 px-1 hover:bg-slate-50 rounded-lg group border-b border-slate-50 last:border-0';
+
+                        div.innerHTML = `
+                            <div class="flex items-center gap-2 overflow-hidden">
+                                <div class="w-1.5 h-6 rounded-full flex-shrink-0 opacity-50" style="background-color: ${conf.color}"></div>
+                                <div class="truncate">
+                                    <p class="text-sm font-semibold text-slate-700 truncate">${t.desc}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 flex-shrink-0 pl-2">
+                                <span class="text-sm font-bold ${isIncome ? 'text-green-600' : 'text-slate-600'}">
+                                    ${isIncome ? '+' : '-'}${formatter.format(t.amount)}
+                                </span>
+                                <button onclick="deleteTransaction(${t.id})" class="text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100" title="Eliminar">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+            });
+        }
+
+        function renderPieLegend() {
+            const container = document.getElementById('pieLegend');
+            container.innerHTML = '';
+            ['fijo', 'esencial', 'inversion', 'noesencial'].forEach(cat => {
+                const conf = categoriesConfig[cat];
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-3';
+                div.innerHTML = `
+                    <div class="w-4 h-4 rounded shadow-sm" style="background-color: ${conf.color}; flex-shrink: 0;"></div>
+                    <span class="text-[15px] font-medium text-slate-700">${conf.label}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function initCharts() {
+            renderPieLegend();
+            // 1. Gráfico de Torta (Anidado: Ingreso Exterior, Gastos Proporcionales Interior)
+            const ctxPie = document.getElementById('pieChart').getContext('2d');
+            pieChart = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Ingreso Total',
+                        categoriesConfig['fijo'].label,
+                        categoriesConfig['esencial'].label,
+                        categoriesConfig['inversion'].label,
+                        categoriesConfig['noesencial'].label,
+                        'Disponible'
+                    ],
+                    datasets: [
+                        {
+                            // Anillo Exterior (Ingreso Total)
+                            label: 'Ingreso',
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: [
+                                categoriesConfig['ingreso'].color,
+                                'transparent', 'transparent', 'transparent', 'transparent', 'transparent'
+                            ],
+                            borderWidth: 0,
+                            weight: 0.3 // Hace que el anillo exterior sea un poco más delgado
+                        },
+                        {
+                            // Anillo Interior (Gastos que van llenando el 360º + Restante)
+                            label: 'Distribución',
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: [
+                                'transparent',
+                                categoriesConfig['fijo'].color,
+                                categoriesConfig['esencial'].color,
+                                categoriesConfig['inversion'].color,
+                                categoriesConfig['noesencial'].color,
+                                '#e2e8f0' // Gris claro para el espacio "Disponible/No gastado"
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#ffffff',
+                            weight: 1 // Anillo principal más grueso
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '55%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            filter: function (tooltipItem) {
+                                // Evitar que el tooltip aparezca en porciones transparentes o vacías
+                                const bgColor = tooltipItem.dataset.backgroundColor[tooltipItem.dataIndex];
+                                return tooltipItem.raw > 0 && bgColor !== 'transparent';
+                            },
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.raw !== null) {
+                                        label += new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(context.raw);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Gráfico de Barras Apiladas (Ingresos vs Gastos)
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Ingreso Total', 'Salidas Distribuidas'],
+                    datasets: [
+                        // Barra 1: Ingresos (Stack 0)
+                        {
+                            label: categoriesConfig['ingreso'].label,
+                            data: [0, 0],
+                            backgroundColor: categoriesConfig['ingreso'].color,
+                            stack: 'Stack 0',
+                            borderRadius: 4
+                        },
+                        // Barra 2: Gastos Apilados (Stack 1) - Orden de Abajo hacia Arriba
+                        {
+                            label: categoriesConfig['fijo'].label,
+                            data: [0, 0],
+                            backgroundColor: categoriesConfig['fijo'].color,
+                            stack: 'Stack 1'
+                        },
+                        {
+                            label: categoriesConfig['esencial'].label,
+                            data: [0, 0],
+                            backgroundColor: categoriesConfig['esencial'].color,
+                            stack: 'Stack 1'
+                        },
+                        {
+                            label: categoriesConfig['inversion'].label,
+                            data: [0, 0],
+                            backgroundColor: categoriesConfig['inversion'].color,
+                            stack: 'Stack 1'
+                        },
+                        {
+                            label: categoriesConfig['noesencial'].label,
+                            data: [0, 0],
+                            backgroundColor: categoriesConfig['noesencial'].color,
+                            stack: 'Stack 1',
+                            borderRadius: { topLeft: 4, topRight: 4 } // Redondear el tope superior de la barra apilada
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true,
+                            grid: { color: '#e2e8f0', drawBorder: false },
+                            ticks: {
+                                callback: function (value) {
+                                    if (value >= 1000000) return '$' + (value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                                    if (value >= 1000) return '$' + (value / 1000).toFixed(0) + 'k';
+                                    return '$' + value;
+                                },
+                                font: { size: 10 }
+                            }
+                        },
+                        x: {
+                            stacked: true,
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }, // Oculto leyenda para mantenerlo limpio, la tabla ya explica los colores
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ': ' + new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(context.raw);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChartsData(totals) {
+            // Calcular restante (Disponible) para que el gráfico se dibuje de 0 a 360 grados proporcional al ingreso
+            let balance = totals.ingreso - totals.totalEgresos;
+            let disponible = balance > 0 ? balance : 0;
+
+            // Actualizar Torta
+            // Dataset 0: Anillo Exterior (Ingreso Total)
+            pieChart.data.datasets[0].data = [totals.ingreso, 0, 0, 0, 0, 0];
+
+            // Dataset 1: Anillo Interior (Gastos + Disponible)
+            pieChart.data.datasets[1].data = [
+                0,
+                totals.fijo,
+                totals.esencial,
+                totals.inversion,
+                totals.noesencial,
+                disponible
+            ];
+            pieChart.update();
+
+            // Actualizar Barras
+            // Dataset 0: Ingresos
+            barChart.data.datasets[0].data = [totals.ingreso, null];
+
+            // Dataset 1: Fijos (Base de la barra apilada)
+            barChart.data.datasets[1].data = [null, totals.fijo];
+
+            // Dataset 2: Esenciales
+            barChart.data.datasets[2].data = [null, totals.esencial];
+
+            // Dataset 3: Inversión
+            barChart.data.datasets[3].data = [null, totals.inversion];
+
+            // Dataset 4: No Esenciales (Tope de la barra apilada)
+            barChart.data.datasets[4].data = [null, totals.noesencial];
+
+            barChart.update();
+        }
+    </script>
+</body>
+
+</html>

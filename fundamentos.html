@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanzas Alan Dente</title>
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Configuración de Colores de Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',     // Azul Oscuro Principal
+                            gold: '#e7d060',     // Dorado/Amarillo
+                            green: '#51832f',    // Verde
+                            bronze: '#b68d24',   // Bronce/Dorado Oscuro
+                            black: '#000000',    // Negro
+                            darkbg: '#111b29',   // Tono más oscuro de fondo para contrastar
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111b29;
+            /* Fondo oscuro */
+            color: #f3f4f6;
+            scroll-behavior: smooth;
+        }
+
+        /* Gradiente para textos destacados usando los dorados de la marca */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #e7d060, #b68d24);
+        }
+
+        /* Personalización del scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111b29;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1b2b40;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b68d24;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-ad-gold selection:text-ad-blue">
+
+    <!-- Header / Navbar -->
+    <header class="fixed w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7x2 mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <!-- Si tienes el logo como imagen, puedes usar esta etiqueta y ocultar el texto: -->
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación
+                            Financiera y Asesoramiento</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="sobre-mi.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre
+                        Mí</a>
+                    <a href="fundamentos.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="servicios.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Servicios</a>
+                    <a href="blog.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Blog</a>
+                    <a href="Herramientas/out/index.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Herramientas <i class="fa-solid fa-bolt text-ad-gold ml-1"></i></a>
+
+
+                    <!-- Desplegable Servicios Recomendados 
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Recomendados <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>-->
+
+                    <!-- Dropdown Menu Servicios Recomendados -->
+                    <!-- <div
+                            class="absolute left-0 top-full w-80 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://craftear.vpscould.site/" target="_blank"
+                                    class="flex items-start px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold flex-shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-wrench"></i>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold">CrafteAR</span>
+                                        <span class="text-xs text-gray-400 mt-1 leading-snug">Plataforma tecnológica
+                                            para conectar trabajadores de oficios con clientes de manera directa.</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!-- Desplegable Contacto -->
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Contacto <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+
+                        <!-- Dropdown Menu Contacto -->
+                        <div
+                            class="absolute left-0 top-full w-64 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                                    target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </div>
+                                    Instagram
+                                </a>
+                                <a href="https://wa.me/+543513110183" target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:finanzasaldente@gmail.com"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    Email
+                                </a>
+                                <a href="contacto.html"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    Formulario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Contenedor Derecho Escritorio -->
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4">
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="sobre-mi.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+                <a href="fundamentos.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Fundamentos</a>
+                <a href="servicios.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Servicios</a>
+                <a href="blog.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Blog</a>
+                <a href="Herramientas/out/index.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex items-center justify-between">Herramientas <i class="fa-solid fa-bolt text-ad-gold"></i></a>
+                    <a href="Herramientas/out/index.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Herramientas <i class="fa-solid fa-bolt text-ad-gold ml-1"></i></a>
+
+
+                <!-- Desplegable Servicios Recomendados Móvil -->
+                <!-- <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-recomendados-menu').classList.toggle('hidden')">
+                        Recomendados
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-recomendados-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://craftear.vpscould.site/" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-wrench mr-2 text-ad-gold"></i> CrafteAR
+                            <span class="block text-xs text-gray-500 mt-1">Conecta trabajadores de oficios con
+                                clientes.</span>
+                        </a>
+                    </div>
+                </div>-->
+
+                <!-- Desplegable Contacto Móvil -->
+                <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-contacto-menu').classList.toggle('hidden')">
+                        Contacto
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-contacto-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-instagram mr-2 text-ad-gold"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/+543513110183" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-whatsapp mr-2 text-ad-gold"></i> WhatsApp
+                        </a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-envelope mr-2 text-ad-gold"></i> Email
+                        </a>
+                        <a href="contacto.html"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-file-signature mr-2 text-ad-gold"></i> Formulario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pilares / Servicios Section -->
+    <section id="servicios" class="py-24 bg-ad-black relative min-h-screen flex flex-col justify-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="text-center mb-16">
+                <span class="text-ad-gold font-bold tracking-widest uppercase text-sm mb-2 block">Fundamentos</span>
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">Mis Pilares Fundamentales</h2>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-ad-gold to-ad-bronze mx-auto rounded-full mb-8"></div>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg md:text-xl font-light">
+                    Construir riqueza no es cuestión de suerte, sino de seguir un sistema probado. Estos son los 3
+                    pilares sobre los cuales edificaremos tu libertad financiera.
+                </p>
+            </div>
+
+            <!-- TEMPLO DE RIQUEZA -->
+            <div class="mt-16 w-full max-w-6xl mx-auto px-4 sm:px-0">
+                
+                <!-- TECHO (Libertad Financiera) -->
+                <div class="relative w-full mb-0 flex flex-col items-center">
+                    <!-- Triángulo del techo -->
+                    <div class="w-full max-w-5xl relative flex items-end justify-center pb-2 sm:pb-4 shadow-2xl" 
+                         style="height: 200px; background: linear-gradient(to bottom, #b68d24, #e7d060); clip-path: polygon(50% 0%, 100% 100%, 0% 100%);">
+                        <div class="text-center z-10 px-4">
+                            <span class="block text-ad-blue/90 font-bold tracking-widest uppercase text-xs sm:text-sm mb-1 drop-shadow-sm">El Objetivo Final</span>
+                            <h2 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-ad-blue uppercase tracking-widest drop-shadow-lg">
+                                Libertad Financiera
+                            </h2>
+                        </div>
+                    </div>
+                    <!-- Cornisa -->
+                    <div class="w-full max-w-6xl h-6 sm:h-8 bg-gradient-to-r from-ad-bronze via-yellow-100 to-ad-bronze shadow-[0_15px_30px_rgba(0,0,0,0.6)] relative z-20 flex items-center justify-center rounded-sm">
+                        <div class="w-[98%] h-1 sm:h-2 bg-black/10 rounded-full"></div>
+                    </div>
+                    <div class="w-[102%] max-w-[70rem] h-3 sm:h-4 bg-ad-bronze shadow-lg relative z-10 rounded-b-md"></div>
+                </div>
+
+                <!-- PILARES -->
+                <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 px-8 md:px-12 relative z-0 mt-8 md:mt-0 py-8">
+                    <!-- Pilar 1: Mentalidad -->
+                    <div class="bg-gradient-to-b from-[#162336] via-[#1b2b40] to-[#162336] border-x-[12px] border-[#111b29] p-6 sm:p-8 flex flex-col items-center text-center relative group shadow-2xl transition-all duration-500 hover:brightness-110 h-full min-h-[400px]">
+                        <!-- Capitel -->
+                        <div class="absolute top-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mt-6 rounded-t-sm shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div>
+                        <div class="absolute top-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mt-2 shadow-sm"></div>
+                        <!-- Estriado -->
+                        <div class="absolute inset-0 opacity-20 pointer-events-none border-x border-white/5" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.2) 15px, rgba(0,0,0,0.2) 30px);"></div>
+                        <!-- Contenido -->
+                        <div class="relative z-20 flex flex-col items-center mt-2 flex-grow">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-ad-darkbg border border-ad-gold/30 rounded-full flex items-center justify-center text-ad-gold mb-6 shadow-inner group-hover:scale-110 group-hover:bg-ad-gold group-hover:text-ad-blue transition-all duration-500">
+                                <i class="fa-solid fa-brain text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4 drop-shadow-md">Mentalidad</h3>
+                            <p class="text-gray-400 text-base sm:text-lg leading-relaxed flex-grow">
+                                Una mentalidad alineada a tus objetivos te permite ver las oportunidades que necesitas.
+                                Romperemos creencias limitantes sobre el dinero para abrir paso a la abundancia.
+                            </p>
+                        </div>
+                        <!-- Base -->
+                        <div class="absolute bottom-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mb-2 shadow-sm"></div>
+                        <div class="absolute bottom-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mb-6 rounded-b-sm shadow-[0_-5px_15px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+
+                    <!-- Pilar 2: Hábitos -->
+                    <div class="bg-gradient-to-b from-[#162336] via-[#1b2b40] to-[#162336] border-x-[12px] border-[#111b29] p-6 sm:p-8 flex flex-col items-center text-center relative group shadow-2xl transition-all duration-500 hover:brightness-110 h-full min-h-[400px]">
+                        <!-- Capitel -->
+                        <div class="absolute top-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mt-6 rounded-t-sm shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div>
+                        <div class="absolute top-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mt-2 shadow-sm"></div>
+                        <!-- Estriado -->
+                        <div class="absolute inset-0 opacity-20 pointer-events-none border-x border-white/5" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.2) 15px, rgba(0,0,0,0.2) 30px);"></div>
+                        <!-- Contenido -->
+                        <div class="relative z-20 flex flex-col items-center mt-2 flex-grow">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-ad-darkbg border border-ad-green/30 rounded-full flex items-center justify-center text-ad-green mb-6 shadow-inner group-hover:scale-110 group-hover:bg-ad-green group-hover:text-white transition-all duration-500">
+                                <i class="fa-solid fa-seedling text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4 drop-shadow-md">Hábitos</h3>
+                            <p class="text-gray-400 text-base sm:text-lg leading-relaxed flex-grow">
+                                Los hábitos son el combustible diario que necesitas para que el progreso sea sostenible en el
+                                tiempo. Pequeñas acciones diarias generan resultados extraordinarios.
+                            </p>
+                        </div>
+                        <!-- Base -->
+                        <div class="absolute bottom-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mb-2 shadow-sm"></div>
+                        <div class="absolute bottom-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mb-6 rounded-b-sm shadow-[0_-5px_15px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+
+                    <!-- Pilar 3: Evolución -->
+                    <div class="bg-gradient-to-b from-[#162336] via-[#1b2b40] to-[#162336] border-x-[12px] border-[#111b29] p-6 sm:p-8 flex flex-col items-center text-center relative group shadow-2xl transition-all duration-500 hover:brightness-110 h-full min-h-[400px]">
+                        <!-- Capitel -->
+                        <div class="absolute top-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mt-6 rounded-t-sm shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div>
+                        <div class="absolute top-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mt-2 shadow-sm"></div>
+                        <!-- Estriado -->
+                        <div class="absolute inset-0 opacity-20 pointer-events-none border-x border-white/5" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.2) 15px, rgba(0,0,0,0.2) 30px);"></div>
+                        <!-- Contenido -->
+                        <div class="relative z-20 flex flex-col items-center mt-2 flex-grow">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-ad-darkbg border border-ad-gold/30 rounded-full flex items-center justify-center text-ad-gold mb-6 shadow-inner group-hover:scale-110 group-hover:bg-ad-gold group-hover:text-ad-blue transition-all duration-500">
+                                <i class="fa-solid fa-stairs text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4 drop-shadow-md">Evolución</h3>
+                            <p class="text-gray-400 text-base sm:text-lg leading-relaxed flex-grow">
+                                Una mejora continua en la gestión financiera te lleva desde tu punto actual hasta donde quieres
+                                llegar, adaptándonos constantemente al mercado y tu vida.
+                            </p>
+                        </div>
+                        <!-- Base -->
+                        <div class="absolute bottom-0 left-0 w-[112%] -ml-[6%] h-3 sm:h-4 bg-ad-gold z-10 -mb-2 shadow-sm"></div>
+                        <div class="absolute bottom-0 left-0 w-[124%] -ml-[12%] h-6 bg-gradient-to-r from-ad-bronze via-ad-gold to-ad-bronze z-10 -mb-6 rounded-b-sm shadow-[0_-5px_15px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+                </div>
+
+                <!-- CIMIENTO (Propósito) -->
+                <div class="relative w-full flex flex-col items-center mt-0">
+                    <!-- Escalón superior -->
+                    <div class="w-[102%] max-w-[70rem] h-4 sm:h-6 bg-gradient-to-r from-ad-gold via-yellow-100 to-ad-bronze rounded-t-sm shadow-[0_-10px_20px_rgba(0,0,0,0.5)] z-20 relative"></div>
+                    <!-- Bloque principal -->
+                    <div class="w-full max-w-6xl bg-gradient-to-b from-ad-darkbg to-[#0a101a] border-t-2 border-ad-gold/40 py-12 px-6 sm:px-12 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative z-10 rounded-sm overflow-hidden">
+                        <!-- Brillo decorativo -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-ad-gold to-transparent opacity-50"></div>
+                        <span class="text-ad-gold font-bold tracking-widest uppercase text-sm sm:text-base mb-3 block drop-shadow-md">El Cimiento Principal</span>
+                        <h2 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 uppercase tracking-widest drop-shadow-[0_0_15px_rgba(231,208,96,0.3)]">
+                            PROPÓSITO
+                        </h2>
+                        <div class="w-32 h-1 bg-gradient-to-r from-ad-gold to-ad-bronze mx-auto mb-6 rounded-full"></div>
+                        <p class="text-gray-300 max-w-3xl mx-auto text-lg md:text-xl font-light leading-relaxed">
+                            Sin un propósito claro y definido, la mentalidad, los hábitos y la mejora continua no sirven para nada. Tu propósito es la base inamovible que sostiene y da sentido a todo tu plan hacia la Libertad Financiera.
+                        </p>
+                    </div>
+                    <!-- Escalón inferior base -->
+                    <div class="w-[104%] max-w-[72rem] h-8 sm:h-12 bg-gradient-to-r from-ad-bronze via-[#3e300f] to-ad-bronze rounded-b-xl shadow-2xl z-0 relative flex items-center justify-center">
+                         <div class="w-[98%] h-2 bg-black/30 rounded-full"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-ad-black py-12 border-t border-ad-bronze/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-800 pb-8">
+                <!-- Columna 1 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-white">FINANZAS <span class="text-ad-gold">AD</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        Finanzas Saludables.
+                    </p>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-ad-gold transition-colors">Inicio</a></li>
+                        <li><a href="sobre-mi.html" class="hover:text-ad-gold transition-colors">Sobre Mí</a></li>
+                        <li><a href="fundamentos.html" class="hover:text-ad-gold transition-colors">Fundamentos</a></li>
+                        <li><a href="servicios.html" class="hover:text-ad-gold transition-colors">Servicios</a></li>
+                        <li><a href="blog.html" class="hover:text-ad-gold transition-colors">Blog</a>
+                    <a href="Herramientas/out/index.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Herramientas <i class="fa-solid fa-bolt text-ad-gold ml-1"></i></a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contacto</h4>
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <!--<a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-youtube"></i></a>-->
+                        <!--<a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-tiktok"></i></a>-->
+                        <a href="https://wa.me/+543513110183"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-green hover:text-white transition-colors text-lg"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-colors text-lg"
+                            title="Enviar Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="contacto.html"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"
+                            title="Formulario de Contacto"><i class="fa-solid fa-file-signature"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2026 Finanzas Alan Dente. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Menú Móvil
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth Scroll y Cierre de menú al hacer click en enlaces móviles
+        document.querySelectorAll('a[href^="#section"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    mobileMenu.classList.add('hidden'); // Cierra menú móvil
+
+                    // Compensar la altura del header fijo (aprox 80px)
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

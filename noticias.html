@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias Financieras - Finanzas Alan Dente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',
+                            gold: '#e7d060',
+                            green: '#51832f',
+                            bronze: '#b68d24',
+                            black: '#000000',
+                            darkbg: '#111b29',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111b29;
+            color: #f3f4f6;
+            scroll-behavior: smooth;
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #e7d060, #b68d24);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111b29;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1b2b40;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b68d24;
+        }
+
+        /* Índice lateral */
+        .index-item {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .index-item:hover {
+            border-left-color: #b68d24;
+            background-color: rgba(27, 43, 64, 0.5);
+        }
+
+        .index-item.active {
+            border-left-color: #e7d060;
+            background-color: rgba(27, 43, 64, 0.8);
+        }
+
+        /* Contenido de noticia */
+        .news-content {
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-content {
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Drop zone */
+        .drop-zone {
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.dragover {
+            border-color: #e7d060;
+            background-color: rgba(231, 208, 96, 0.05);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-ad-gold selection:text-ad-blue">
+
+    <!-- Header / Navbar -->
+    <header class="fixed w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación
+                            Financiera y Asesoramiento</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html#inicio"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="index.html#servicios"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="index.html#nosotros"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre Mí</a>
+
+                    <!-- Desplegable Contacto -->
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Contacto <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div
+                            class="absolute left-0 top-full w-64 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                                    target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </div>
+                                    Instagram
+                                </a>
+                                <a href="https://wa.me/+543513110183" target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:finanzasaldente@gmail.com"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    Email
+                                </a>
+                                <a href="contacto.html"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    Formulario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4"></div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html#inicio"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="index.html#servicios"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Fundamentos</a>
+                <a href="index.html#nosotros"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+
+                <!-- Desplegable Contacto Móvil -->
+                <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-contacto-menu').classList.toggle('hidden')">
+                        Contacto
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-contacto-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-instagram mr-2 text-ad-gold"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/+543513110183" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-whatsapp mr-2 text-ad-gold"></i> WhatsApp
+                        </a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-envelope mr-2 text-ad-gold"></i> Email
+                        </a>
+                        <a href="contacto.html"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-file-signature mr-2 text-ad-gold"></i> Formulario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-28 pb-12 px-4 relative">
+        <!-- Fondo decorativo -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-ad-gold/5 rounded-full blur-3xl">
+            </div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-ad-green/10 rounded-full blur-3xl">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full z-10">
+
+            <!-- Encabezado de la página + Botón agregar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-ad-gold/10 text-ad-gold border border-ad-gold/20 mb-4 text-sm font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-newspaper"></i> Actualidad
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white">Noticias <span
+                            class="text-gradient">Financieras</span></h1>
+                </div>
+                <button onclick="openAddModal()"
+                    class="bg-gradient-to-r from-ad-gold to-ad-bronze text-ad-black px-6 py-3 rounded-xl font-bold hover:from-ad-bronze hover:to-ad-gold transition-all shadow-[0_0_15px_rgba(231,208,96,0.2)] transform hover:-translate-y-1 flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-plus"></i> Agregar Noticia
+                </button>
+            </div>
+
+            <!-- Layout 3 columnas -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="main-layout">
+
+                <!-- IZQUIERDA: Índice de noticias -->
+                <aside class="lg:col-span-3">
+                    <div
+                        class="bg-ad-blue/50 backdrop-blur-sm rounded-2xl border border-ad-bronze/20 overflow-hidden sticky top-28">
+                        <div class="px-5 py-4 border-b border-ad-bronze/20">
+                            <h2 class="text-sm font-bold text-ad-gold uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-list"></i> Índice de Noticias
+                            </h2>
+                        </div>
+                        <div class="max-h-[65vh] overflow-y-auto" id="news-index">
+                            <!-- Generado por JS -->
+                        </div>
+                        <div id="empty-index"
+                            class="hidden px-5 py-8 text-center text-gray-500 text-sm italic">
+                            <i class="fa-solid fa-inbox text-2xl mb-3 block text-gray-600"></i>
+                            No hay noticias cargadas aún.
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- CENTRO: Contenido de la noticia -->
+                <section class="lg:col-span-6">
+                    <div
+                        class="bg-ad-blue/50 backdrop-blur-sm rounded-2xl border border-ad-bronze/20 min-h-[60vh] relative"
+                        id="news-viewer">
+
+                        <!-- Estado vacío -->
+                        <div id="empty-state" class="flex flex-col items-center justify-center py-24 px-8 text-center">
+                            <div
+                                class="w-24 h-24 bg-ad-darkbg border border-ad-gold/20 rounded-full flex items-center justify-center mb-6">
+                                <i class="fa-solid fa-newspaper text-4xl text-ad-gold/40"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Sin noticias aún</h3>
+                            <p class="text-gray-400 max-w-md mb-6">
+                                Hacé clic en <strong class="text-ad-gold">"Agregar Noticia"</strong> para cargar tu
+                                primera noticia desde un archivo de texto.
+                            </p>
+                        </div>
+
+                        <!-- Noticia seleccionada (oculta inicialmente) -->
+                        <div id="news-detail" class="hidden">
+                            <!-- Header de la noticia -->
+                            <div class="px-8 pt-8 pb-6 border-b border-ad-bronze/10">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span id="detail-date"
+                                        class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        <span></span>
+                                    </span>
+                                </div>
+                                <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-white leading-tight">
+                                </h2>
+                            </div>
+
+                            <!-- Cuerpo de la noticia -->
+                            <div class="px-8 py-6">
+                                <div id="detail-content" class="news-content text-gray-300 text-base"></div>
+                            </div>
+
+                            <!-- Barra de acciones -->
+                            <div class="px-8 py-4 border-t border-ad-bronze/10 flex justify-between items-center">
+                                <span class="text-xs text-gray-500 italic" id="detail-charcount"></span>
+                                <button onclick="deleteCurrentNews()"
+                                    class="text-sm text-red-400 hover:text-red-300 transition-colors flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-trash-can"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DERECHA: Fuentes -->
+                <aside class="lg:col-span-3">
+                    <div
+                        class="bg-ad-blue/50 backdrop-blur-sm rounded-2xl border border-ad-bronze/20 overflow-hidden sticky top-28">
+                        <div class="px-5 py-4 border-b border-ad-bronze/20">
+                            <h2 class="text-sm font-bold text-ad-gold uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-link"></i> Fuentes
+                            </h2>
+                        </div>
+                        <div class="px-5 py-4" id="news-sources">
+                            <!-- Generado por JS -->
+                        </div>
+                        <div id="empty-sources"
+                            class="hidden px-5 py-8 text-center text-gray-500 text-sm italic">
+                            <i class="fa-solid fa-link-slash text-2xl mb-3 block text-gray-600"></i>
+                            Selecciona una noticia para ver sus fuentes.
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Agregar Noticia -->
+    <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="modal-content bg-gradient-to-br from-ad-blue to-ad-black border border-ad-bronze/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-8 relative">
+
+            <!-- Botón cerrar -->
+            <button onclick="closeAddModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-ad-gold transition-colors focus:outline-none">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center text-ad-gold">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </div>
+                    Agregar Noticia
+                </h2>
+                <p class="text-gray-400 mt-2 text-sm">Subí un archivo .txt con el contenido de la noticia, indicá el
+                    título y la fuente.</p>
+            </div>
+
+            <form id="add-news-form" class="space-y-5" onsubmit="handleAddNews(event)">
+
+                <!-- Título -->
+                <div>
+                    <label for="news-title" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fa-solid fa-heading mr-1 text-ad-gold"></i> Título de la Noticia
+                    </label>
+                    <input type="text" id="news-title" required
+                        class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500"
+                        placeholder="Ej: El dólar sube un 5% esta semana">
+                </div>
+
+                <!-- Fuente -->
+                <div>
+                    <label for="news-source" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fa-solid fa-globe mr-1 text-ad-gold"></i> Fuente(s)
+                    </label>
+                    <input type="text" id="news-source" required
+                        class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500"
+                        placeholder="Ej: Infobae, Reuters, Ámbito Financiero">
+                    <p class="text-xs text-gray-500 mt-1">Separá múltiples fuentes con comas.</p>
+                </div>
+
+                <!-- Archivo -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fa-solid fa-file-lines mr-1 text-ad-gold"></i> Archivo de contenido
+                    </label>
+                    <div id="drop-zone"
+                        class="drop-zone border-2 border-dashed border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-ad-bronze transition-colors"
+                        onclick="document.getElementById('news-file').click()">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-500 mb-3 block"
+                            id="upload-icon"></i>
+                        <p class="text-gray-400 text-sm" id="upload-text">
+                            Hacé clic o arrastrá un archivo <strong>.txt</strong> aquí
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1" id="upload-hint">Máximo 500KB</p>
+                        <input type="file" id="news-file" accept=".txt,.text" class="hidden"
+                            onchange="handleFileSelect(event)">
+                    </div>
+                    <div id="file-preview" class="hidden mt-3 bg-ad-darkbg rounded-lg px-4 py-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-file-lines text-ad-gold"></i>
+                            <span class="text-gray-300" id="file-name"></span>
+                            <span class="text-gray-500" id="file-size"></span>
+                        </div>
+                        <button type="button" onclick="clearFile()" class="text-gray-400 hover:text-red-400 transition-colors">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- O escribir directamente -->
+                <div>
+                    <label for="news-text-direct" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fa-solid fa-pen mr-1 text-ad-gold"></i> O escribí el contenido directamente
+                    </label>
+                    <textarea id="news-text-direct" rows="5"
+                        class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500 resize-none"
+                        placeholder="Pegá o escribí el resumen de la noticia aquí..."></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeAddModal()"
+                        class="flex-1 bg-transparent border border-gray-600 text-gray-300 hover:border-gray-400 hover:text-white font-bold py-3 px-6 rounded-xl transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 bg-gradient-to-r from-ad-gold to-ad-bronze text-ad-black font-bold py-3 px-6 rounded-xl hover:from-ad-bronze hover:to-ad-gold transition-all shadow-[0_0_15px_rgba(231,208,96,0.2)] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Publicar Noticia
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-ad-black py-12 border-t border-ad-bronze/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-gray-800 pb-8">
+                <!-- Columna 1 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-white">FINANZAS <span class="text-ad-gold">AD</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        El sistema financiero para el profesional independiente.
+                        Sube de nivel, protege tu transición y alcanza tu independencia.
+                    </p>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="index.html#inicio" class="hover:text-ad-gold transition-colors">Inicio</a></li>
+                        <li><a href="index.html#servicios" class="hover:text-ad-gold transition-colors">Mis Pilares</a></li>
+                        <li><a href="index.html#mis-servicios" class="hover:text-ad-gold transition-colors">Servicios</a></li>
+                    </ul>
+                </div>
+                <!-- Columna 3 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contacto</h4>
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/+543513110183"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-green hover:text-white transition-colors text-lg"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-colors text-lg"
+                            title="Enviar Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="contacto.html"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"
+                            title="Formulario de Contacto"><i class="fa-solid fa-file-signature"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2026 Finanzas Alan Dente. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // Estado de la app
+        // ============================================================
+        let newsData = [];
+        let selectedNewsId = null;
+        let pendingFileContent = null;
+
+        // ============================================================
+        // localStorage
+        // ============================================================
+        const STORAGE_KEY = 'finanzas_ad_noticias';
+
+        function loadNews() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    newsData = JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error cargando noticias:', e);
+                newsData = [];
+            }
+        }
+
+        function saveNews() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(newsData));
+        }
+
+        // ============================================================
+        // Renderizado
+        // ============================================================
+        function renderAll() {
+            renderIndex();
+            renderDetail();
+            renderSources();
+        }
+
+        function renderIndex() {
+            const container = document.getElementById('news-index');
+            const emptyMsg = document.getElementById('empty-index');
+
+            if (newsData.length === 0) {
+                container.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            container.innerHTML = newsData.map((news, i) => `
+                <div class="index-item px-5 py-3 cursor-pointer ${selectedNewsId === news.id ? 'active' : ''}"
+                     onclick="selectNews('${news.id}')">
+                    <div class="flex items-start gap-3">
+                        <span class="text-xs font-bold text-ad-bronze mt-0.5 shrink-0">${String(i + 1).padStart(2, '0')}</span>
+                        <div class="min-w-0">
+                            <h3 class="text-sm font-semibold ${selectedNewsId === news.id ? 'text-ad-gold' : 'text-gray-300'} truncate leading-snug">
+                                ${escapeHtml(news.title)}
+                            </h3>
+                            <p class="text-xs text-gray-500 mt-1">
+                                <i class="fa-regular fa-calendar mr-1"></i>${formatDate(news.date)}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDetail() {
+            const emptyState = document.getElementById('empty-state');
+            const detailView = document.getElementById('news-detail');
+
+            if (!selectedNewsId) {
+                emptyState.classList.remove('hidden');
+                detailView.classList.add('hidden');
+                return;
+            }
+
+            const news = newsData.find(n => n.id === selectedNewsId);
+            if (!news) {
+                selectedNewsId = null;
+                emptyState.classList.remove('hidden');
+                detailView.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            detailView.classList.remove('hidden');
+
+            document.getElementById('detail-title').textContent = news.title;
+            document.getElementById('detail-date').querySelector('span').textContent = formatDate(news.date);
+            document.getElementById('detail-content').textContent = news.content;
+            document.getElementById('detail-charcount').textContent = `${news.content.length} caracteres`;
+        }
+
+        function renderSources() {
+            const container = document.getElementById('news-sources');
+            const emptyMsg = document.getElementById('empty-sources');
+
+            if (!selectedNewsId) {
+                container.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            const news = newsData.find(n => n.id === selectedNewsId);
+            if (!news) {
+                container.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            const sources = news.sources || [];
+
+            container.innerHTML = `
+                <div class="space-y-3">
+                    ${sources.map((src, i) => `
+                        <div class="bg-ad-darkbg/60 rounded-lg px-4 py-3 border border-gray-700/50">
+                            <div class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-ad-blue border border-ad-gold/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <span class="text-xs font-bold text-ad-gold">${i + 1}</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-200">${escapeHtml(src)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-700/50">
+                    <p class="text-xs text-gray-500 italic">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        ${sources.length} fuente${sources.length !== 1 ? 's' : ''} citada${sources.length !== 1 ? 's' : ''}
+                    </p>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // Acciones
+        // ============================================================
+        function selectNews(id) {
+            selectedNewsId = id;
+            renderAll();
+        }
+
+        function deleteCurrentNews() {
+            if (!selectedNewsId) return;
+            const news = newsData.find(n => n.id === selectedNewsId);
+            if (!news) return;
+
+            if (confirm(`¿Eliminar la noticia "${news.title}"?`)) {
+                newsData = newsData.filter(n => n.id !== selectedNewsId);
+                selectedNewsId = newsData.length > 0 ? newsData[0].id : null;
+                saveNews();
+                renderAll();
+            }
+        }
+
+        // ============================================================
+        // Modal: Agregar Noticia
+        // ============================================================
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            pendingFileContent = null;
+            resetFileUI();
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('add-news-form').reset();
+            pendingFileContent = null;
+            resetFileUI();
+        }
+
+        function resetFileUI() {
+            document.getElementById('file-preview').classList.add('hidden');
+            document.getElementById('drop-zone').classList.remove('hidden');
+            document.getElementById('news-file').value = '';
+        }
+
+        function clearFile() {
+            pendingFileContent = null;
+            resetFileUI();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 512000) {
+                alert('El archivo es demasiado grande. Máximo 500KB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                pendingFileContent = e.target.result;
+
+                // Mostrar preview
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-size').textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
+                document.getElementById('file-preview').classList.remove('hidden');
+                document.getElementById('drop-zone').classList.add('hidden');
+            };
+            reader.readAsText(file);
+        }
+
+        function handleAddNews(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('news-title').value.trim();
+            const sourceRaw = document.getElementById('news-source').value.trim();
+            const directText = document.getElementById('news-text-direct').value.trim();
+
+            // Obtener contenido: prioridad archivo > texto directo
+            const content = pendingFileContent || directText;
+
+            if (!title) {
+                alert('Por favor, ingresá un título.');
+                return;
+            }
+
+            if (!sourceRaw) {
+                alert('Por favor, indicá la fuente.');
+                return;
+            }
+
+            if (!content) {
+                alert('Por favor, subí un archivo o escribí el contenido de la noticia.');
+                return;
+            }
+
+            // Parsear fuentes (separadas por coma)
+            const sources = sourceRaw.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+            const newNews = {
+                id: 'news_' + Date.now(),
+                title: title,
+                content: content,
+                sources: sources,
+                date: new Date().toISOString()
+            };
+
+            newsData.unshift(newNews); // Agregar al inicio (más reciente primero)
+            selectedNewsId = newNews.id;
+            saveNews();
+            renderAll();
+            closeAddModal();
+        }
+
+        // ============================================================
+        // Drag & Drop
+        // ============================================================
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('news-file').files = files;
+                handleFileSelect({ target: { files: files } });
+            }
+        });
+
+        // ============================================================
+        // Helpers
+        // ============================================================
+        function formatDate(isoString) {
+            const d = new Date(isoString);
+            return d.toLocaleDateString('es-AR', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================================
+        // Inicialización
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menú móvil
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Cerrar modal con clic fuera
+            document.getElementById('add-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'add-modal') closeAddModal();
+            });
+
+            // Cerrar modal con Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAddModal();
+            });
+
+            // Cargar y renderizar
+            loadNews();
+            if (newsData.length > 0) {
+                selectedNewsId = newsData[0].id;
+            }
+            renderAll();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creador de Activos Financieros - Finanzas</title>
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- FontAwesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',
+                            gold: '#e7d060',
+                            green: '#51832f',
+                            bronze: '#b68d24',
+                            black: '#000000',
+                            darkbg: '#111b29',
+                        },
+                        brand: {
+                            dark: '#0B132B',
+                            primary: '#1C2541',
+                            accent: '#F59E0B',
+                            light: '#F3F4F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F3F4F6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .step-hidden {
+            display: none;
+        }
+
+        /* Updated colors to match brand */
+        .accent-bg {
+            background-color: #51832f;
+        }
+
+        .accent-hover:hover {
+            background-color: #3b5e22;
+        }
+
+        .accent-text {
+            color: #51832f;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación y
+                            Educación Financiera</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html#inicio"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="index.html#servicios"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="index.html#nosotros"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre Mí</a>
+
+
+                    <!-- Desplegable Contacto -->
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Contacto <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div
+                            class="absolute left-0 top-full w-64 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                                    target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </div>
+                                    Instagram
+                                </a>
+                                <a href="https://wa.me/+543513110183" target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:finanzasaldente@gmail.com"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    Email
+                                </a>
+                                <a href="contacto.html"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    Formulario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4">
+                    <div class="text-sm text-slate-300 mr-2">
+                        <i class="fa-regular fa-calendar mr-2"></i><span id="currentDate"></span>
+                    </div>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center gap-4">
+                    <div class="text-sm text-slate-300 hidden sm:block">
+                        <i class="fa-regular fa-calendar mr-2"></i><span id="currentDateMobile"></span>
+                    </div>
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl absolute w-full left-0 top-full z-50">
+            <div class="px-4 pt-2 pb-6 space-y-2 bg-ad-blue/95 backdrop-blur-md">
+                <a href="index.html#inicio"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="index.html#servicios"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Servicios</a>
+                <a href="index.html#nosotros"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+
+
+                <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-contacto-menu').classList.toggle('hidden')">
+                        Contacto <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-contacto-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-instagram mr-2 text-ad-gold"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/+543513110183" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-whatsapp mr-2 text-ad-gold"></i> WhatsApp
+                        </a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-envelope mr-2 text-ad-gold"></i> Email
+                        </a>
+                        <a href="contacto.html"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-file-signature mr-2 text-ad-gold"></i> Formulario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <div class="max-w-7xl mx-auto px-4 py-8 pb-0">
+        <h2 class="text-2xl font-bold text-ad-blue mb-2 flex items-center gap-2"><i
+                class="fa-solid fa-seedling text-ad-green"></i> Creador de Activos Financieros</h2>
+        <p class="text-slate-600 mb-6">Completa los 8 pasos para dar forma y evaluar la viabilidad de tu idea de negocio
+            o inversión.</p>
+    </div>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full flex flex-col md:flex-row gap-8">
+
+        <aside class="md:w-1/4">
+            <div class="bg-white p-6 rounded-xl shadow-md sticky top-8 border border-gray-100">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">Tu Ruta</h2>
+                <ul id="step-navigation" class="space-y-3 text-sm">
+                    <li class="nav-item font-bold accent-text" data-step="1">1. La Semilla</li>
+                    <li class="nav-item text-gray-400" data-step="2">2. Público Objetivo</li>
+                    <li class="nav-item text-gray-400" data-step="3">3. Necesidades</li>
+                    <li class="nav-item text-gray-400" data-step="4">4. Presupuesto</li>
+                    <li class="nav-item text-gray-400" data-step="5">5. Fondos</li>
+                    <li class="nav-item text-gray-400" data-step="6">6. Precio</li>
+                    <li class="nav-item text-gray-400" data-step="7">7. Publicitando</li>
+                    <li class="nav-item text-gray-400" data-step="8">8. Expansión</li>
+                </ul>
+            </div>
+        </aside>
+
+        <section class="md:w-3/4 bg-white p-8 rounded-xl shadow-md border border-gray-100 relative"
+            id="wizard-container">
+
+            <div id="step-1-content" class="step-content">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">💡</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 1: La semilla del activo</h2>
+                    <p class="text-gray-600">Todo gran activo comienza con una idea que resuelve un problema. ¿Qué
+                        quieres emprender?</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Nombre de tu proyecto/idea:</label>
+                        <input type="text" id="in-name"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a6b5d]"
+                            placeholder="Ej: App de paseadores de perros">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Describe brevemente qué hace y qué problema
+                            resuelve:</label>
+                        <textarea id="in-description" rows="4"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a6b5d]"
+                            placeholder="Conecta a dueños ocupados con paseadores verificados en su barrio..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-2-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">🎯</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 2: ¿Cuál es mi público objetivo?</h2>
+                    <p class="text-gray-600">Un producto para todos es un producto para nadie. Define exactamente a
+                        quién le vas a vender.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Rango de Edad:</label>
+                            <input type="text" id="in-age" class="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="Ej: 25 - 45 años">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Ubicación / Geografía:</label>
+                            <input type="text" id="in-location" class="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="Ej: Zonas céntricas de la ciudad">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Intereses y Necesidades principales:</label>
+                        <textarea id="in-interests" rows="3" class="w-full p-3 border border-gray-300 rounded-lg"
+                            placeholder="Aman a sus mascotas pero tienen jornadas laborales muy largas..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-3-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">🛠️</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 3: ¿Qué necesito para este emprendimiento?</h2>
+                    <p class="text-gray-600">Haz un inventario de los recursos esenciales para poder operar tu negocio.
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="in-resource" class="flex-grow p-3 border border-gray-300 rounded-lg"
+                            placeholder="Ej: Computadora, Licencia de Software, Vehículo...">
+                        <button id="btn-add-resource"
+                            class="accent-bg accent-hover text-white px-6 py-3 rounded-lg font-bold transition-colors">Agregar</button>
+                    </div>
+                    <ul id="resource-list"
+                        class="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-[100px] space-y-2">
+                    </ul>
+                </div>
+            </div>
+
+            <div id="step-4-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">📊</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 4: Presupuesto Financiero</h2>
+                    <p class="text-gray-600">Conozcamos tus números. ¿Cuánto cuesta arrancar y cuánto cuesta mantenerse
+                        vivo cada mes?</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <label class="block text-sm font-bold mb-1 text-gray-700">Inversión Inicial (CAPEX)
+                                ($):</label>
+                            <p class="text-xs text-gray-500 mb-2">Gastos de una sola vez para empezar.</p>
+                            <input type="number" id="in-capex"
+                                class="w-full p-2 border border-gray-300 rounded focus:ring-[#4a6b5d] focus:border-[#4a6b5d]"
+                                value="5000">
+                        </div>
+                        <div class="bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <label class="block text-sm font-bold mb-1 text-gray-700">Costos Fijos Mensuales
+                                ($):</label>
+                            <p class="text-xs text-gray-500 mb-2">Gastos que pagas vendas o no vendas (alquiler,
+                                internet).</p>
+                            <input type="number" id="in-fixed"
+                                class="w-full p-2 border border-gray-300 rounded focus:ring-[#4a6b5d] focus:border-[#4a6b5d]"
+                                value="1000">
+                        </div>
+                        <div class="bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <label class="block text-sm font-bold mb-1 text-gray-700">Costo Variable por Unidad
+                                ($):</label>
+                            <p class="text-xs text-gray-500 mb-2">Cuánto te cuesta producir o entregar UN
+                                servicio/producto.</p>
+                            <input type="number" id="in-variable"
+                                class="w-full p-2 border border-gray-300 rounded focus:ring-[#4a6b5d] focus:border-[#4a6b5d]"
+                                value="20">
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col items-center justify-center bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-center mb-4 text-gray-700">Composición de Gastos (Primer Mes)</h3>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-5-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">💰</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 5: ¿Dónde consigo los fondos?</h2>
+                    <p class="text-gray-600">Según tu Presupuesto, necesitas capital inicial. ¿Cómo lo vas a financiar?
+                    </p>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-[#f4f1ea] p-4 rounded-lg text-center border border-gray-300">
+                        <span class="text-gray-600 font-semibold">Capital Total Necesario Estimado:</span>
+                        <h3 class="text-3xl font-bold accent-text mt-1" id="display-capital-needed">$0</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div
+                            class="border border-gray-200 p-4 rounded-lg text-center hover:shadow-md transition-shadow">
+                            <span class="text-3xl block mb-2">🏦</span>
+                            <h4 class="font-bold mb-2">Ahorros Propios</h4>
+                            <input type="number" id="fund-savings"
+                                class="w-full p-2 border border-gray-300 rounded text-center" placeholder="$ Monto"
+                                value="0">
+                        </div>
+                        <div
+                            class="border border-gray-200 p-4 rounded-lg text-center hover:shadow-md transition-shadow">
+                            <span class="text-3xl block mb-2">🤝</span>
+                            <h4 class="font-bold mb-2">Préstamo / Banco</h4>
+                            <input type="number" id="fund-loan"
+                                class="w-full p-2 border border-gray-300 rounded text-center" placeholder="$ Monto"
+                                value="0">
+                        </div>
+                        <div
+                            class="border border-gray-200 p-4 rounded-lg text-center hover:shadow-md transition-shadow">
+                            <span class="text-3xl block mb-2">💼</span>
+                            <h4 class="font-bold mb-2">Inversores / Socios</h4>
+                            <input type="number" id="fund-investors"
+                                class="w-full p-2 border border-gray-300 rounded text-center" placeholder="$ Monto"
+                                value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-6-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">⚖️</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 6: Poner el Precio (Punto de Equilibrio)</h2>
+                    <p class="text-gray-600">Determina a cuánto venderás tu producto para saber cuántos necesitas vender
+                        para no perder dinero.</p>
+                </div>
+                <div class="space-y-6">
+                    <div
+                        class="flex flex-col md:flex-row gap-6 items-end bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <div class="w-full md:w-1/2">
+                            <label class="block text-sm font-bold mb-2 text-gray-700 text-lg">Precio de Venta Sugerido
+                                ($):</label>
+                            <input type="number" id="in-price"
+                                class="w-full p-4 text-2xl font-bold border border-gray-300 rounded-lg text-center focus:ring-[#4a6b5d]"
+                                value="50">
+                        </div>
+                        <div class="w-full md:w-1/2 text-center md:text-left">
+                            <p class="text-sm text-gray-500 uppercase tracking-wide font-bold">Unidades para Empatar
+                                (Mes):</p>
+                            <p class="text-4xl font-bold text-red-600 mt-1" id="display-breakeven">0 uds</p>
+                        </div>
+                    </div>
+                    <div class="w-full border border-gray-100 p-4 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-center mb-4 text-gray-700">Análisis de Punto de Equilibrio</h3>
+                        <div class="chart-container">
+                            <canvas id="breakEvenChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-7-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">📣</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 7: Publicitando</h2>
+                    <p class="text-gray-600">Ya tienes los números. ¿Cómo vas a hacer que tu público objetivo (Paso 2)
+                        se entere de que existes?</p>
+                </div>
+                <div class="space-y-4">
+                    <p class="font-semibold text-sm bg-blue-50 text-blue-800 p-3 rounded">Recordatorio: Tu público está
+                        en: <span id="reminder-audience" class="font-bold"></span></p>
+                    <label class="block text-sm font-semibold mb-1">Estrategias de Marketing principales:</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"><input
+                                type="checkbox" class="mr-3 w-5 h-5 accent-[#4a6b5d] mkt-check"
+                                value="Redes Sociales Orgánicas"> Redes Sociales Orgánicas</label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"><input
+                                type="checkbox" class="mr-3 w-5 h-5 accent-[#4a6b5d] mkt-check"
+                                value="Ads (Facebook/Google)"> Publicidad Paga (Ads)</label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"><input
+                                type="checkbox" class="mr-3 w-5 h-5 accent-[#4a6b5d] mkt-check"
+                                value="Boca a boca / Referidos"> Boca a boca / Referidos</label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"><input
+                                type="checkbox" class="mr-3 w-5 h-5 accent-[#4a6b5d] mkt-check"
+                                value="Alianzas Estratégicas"> Alianzas Estratégicas</label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1 mt-4">Detalla tu plan de acción (Ej: "Publicar 3
+                            Reels por semana"):</label>
+                        <textarea id="in-marketing-plan" rows="3"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#4a6b5d]"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-8-content" class="step-content step-hidden">
+                <div class="mb-6">
+                    <span class="text-4xl mb-4 block">🚀</span>
+                    <h2 class="text-3xl font-bold mb-2">Paso 8: Expansión</h2>
+                    <p class="text-gray-600">Un activo financiero crece. Si tu modelo funciona, ¿cómo lo escalas para
+                        aumentar tus ingresos sin aumentar tu tiempo de trabajo?</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Visión a 1 año: ¿Hacia dónde crecerá el
+                            negocio?</label>
+                        <textarea id="in-expansion" rows="4"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#4a6b5d]"
+                            placeholder="Franquiciar el modelo a otras ciudades, crear una app automatizada..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div id="summary-content" class="step-content step-hidden">
+                <div class="text-center mb-8">
+                    <div class="flex justify-center mb-4">
+                        <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" alt="Logo de Finanzas Alan Dente"
+                            class="h-20 w-20 object-contain" onerror="this.style.display='none'">
+                    </div>
+                    <h2 class="text-4xl font-bold accent-text mb-2">Tu Activo Financiero</h2>
+                    <p class="text-gray-600 text-lg">Resumen Ejecutivo elaborado con <strong>Finanzas Alan
+                            Dente</strong></p>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                    <div>
+                        <h3 class="text-xs uppercase font-bold text-gray-400 tracking-wider mb-1">El Negocio</h3>
+                        <p class="text-xl font-bold text-gray-800 mb-2" id="sum-name">-</p>
+                        <p class="text-sm text-gray-600 mb-4" id="sum-desc">-</p>
+
+                        <h3 class="text-xs uppercase font-bold text-gray-400 tracking-wider mb-1">Público</h3>
+                        <p class="text-sm text-gray-800 mb-4"><span id="sum-age"></span> | <span id="sum-loc"></span>
+                        </p>
+
+                        <h3 class="text-xs uppercase font-bold text-gray-400 tracking-wider mb-1">Expansión</h3>
+                        <p class="text-sm text-gray-600 italic" id="sum-exp">-</p>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 class="text-center font-bold text-gray-700 mb-4 border-b pb-2">Datos Financieros</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Inversión Inicial:</span>
+                            <span class="font-bold text-gray-800" id="sum-capex">$0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Costo Fijo Mensual:</span>
+                            <span class="font-bold text-gray-800" id="sum-fixed">$0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Costo Variable:</span>
+                            <span class="font-bold text-gray-800" id="sum-var">$0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+                            <span class="text-sm text-gray-600">Precio de Venta:</span>
+                            <span class="font-bold accent-text text-lg" id="sum-price">$0</span>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-xs uppercase font-bold text-gray-500 mb-1">Meta Mensual (Punto Equilibrio)
+                            </p>
+                            <p class="text-3xl font-black text-red-600" id="sum-breakeven">0</p>
+                            <p class="text-xs text-gray-500">unidades para no perder dinero</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4" id="pdf-action-container">
+                    <button id="btn-back-to-edit"
+                        class="px-8 py-3 bg-white border border-[#4a6b5d] text-[#4a6b5d] hover:bg-gray-50 rounded-lg font-bold shadow-sm transition-colors flex items-center justify-center gap-2">
+                        ✏️ Volver y Editar
+                    </button>
+                    <button id="btn-download-pdf"
+                        class="px-8 py-3 bg-[#4a6b5d] hover:bg-[#3a5449] text-white rounded-lg font-bold shadow-md transition-colors flex items-center justify-center gap-2">
+                        📄 Descargar Resumen en PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-10 flex justify-between border-t border-gray-100 pt-6" id="controls-container">
+                <button id="btn-prev"
+                    class="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 font-bold hover:bg-gray-50 transition-colors opacity-0 pointer-events-none">Anterior</button>
+                <button id="btn-next"
+                    class="px-8 py-3 accent-bg accent-hover text-white rounded-lg font-bold shadow-md transition-colors">Siguiente
+                    Paso</button>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ad-black py-12 border-t border-ad-bronze/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-800 pb-8">
+                <!-- Columna 1 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-white">FINANZAS <span class="text-ad-gold">AD</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        Educación financiera para la vida real. Sube de nivel, protege tu patrimonio y alcanza tus
+                        metas.
+                    </p>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="index.html#inicio" class="hover:text-ad-gold transition-colors">Inicio</a></li>
+                        <li><a href="index.html#servicios" class="hover:text-ad-gold transition-colors">Nuestros
+                                Pilares</a></li>
+                    </ul>
+                </div>
+                <!-- Columna 4 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Conectame</h4>
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/+543513110183"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-green hover:text-white transition-colors text-lg"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-colors text-lg"
+                            title="Enviar Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="contacto.html"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"
+                            title="Formulario de Contacto"><i class="fa-solid fa-file-signature"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2026 Finanzas Alan Dente. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const state = {
+            currentStep: 1,
+            totalSteps: 8,
+            resources: [],
+            finances: {
+                capex: 5000,
+                fixed: 1000,
+                variable: 20,
+                price: 50
+            }
+        };
+
+        let budgetChartInstance = null;
+        let breakEvenChartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setear fecha
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('es-ES', options);
+            if (document.getElementById('currentDate')) document.getElementById('currentDate').textContent = todayStr;
+            if (document.getElementById('currentDateMobile')) document.getElementById('currentDateMobile').textContent = todayStr;
+
+            // Menú Móvil
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+
+        document.getElementById('btn-next').addEventListener('click', () => {
+            if (state.currentStep < state.totalSteps) {
+                state.currentStep++;
+                updateUI();
+            } else if (state.currentStep === state.totalSteps) {
+                state.currentStep++;
+                updateUI();
+            }
+        });
+
+        document.getElementById('btn-prev').addEventListener('click', () => {
+            if (state.currentStep > 1) {
+                state.currentStep--;
+                updateUI();
+            }
+        });
+
+        document.getElementById('btn-add-resource').addEventListener('click', () => {
+            const input = document.getElementById('in-resource');
+            if (input.value.trim() !== '') {
+                state.resources.push(input.value.trim());
+                input.value = '';
+                renderResources();
+            }
+        });
+
+        ['in-capex', 'in-fixed', 'in-variable'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateFinancialsFromInputs);
+        });
+        document.getElementById('in-price').addEventListener('input', updatePricingFromInputs);
+
+        function updateUI() {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('step-hidden'));
+
+            if (state.currentStep <= state.totalSteps) {
+                document.getElementById(`step-${state.currentStep}-content`).classList.remove('step-hidden');
+                document.getElementById('progress-indicator').innerText = `Paso ${state.currentStep} de ${state.totalSteps}`;
+                document.getElementById('controls-container').style.display = 'flex';
+
+                if (state.currentStep === state.totalSteps) {
+                    document.getElementById('btn-next').innerText = "Generar Resumen Final";
+                } else {
+                    document.getElementById('btn-next').innerText = "Siguiente Paso";
+                }
+
+                if (state.currentStep === 1) {
+                    document.getElementById('btn-prev').classList.add('opacity-0', 'pointer-events-none');
+                } else {
+                    document.getElementById('btn-prev').classList.remove('opacity-0', 'pointer-events-none');
+                }
+
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    const step = parseInt(el.getAttribute('data-step'));
+                    const baseClasses = 'nav-item cursor-pointer hover:text-[#4a6b5d] transition-all block py-1 ';
+                    if (step === state.currentStep) {
+                        el.className = baseClasses + 'font-bold accent-text text-lg';
+                    } else if (step < state.currentStep) {
+                        el.className = baseClasses + 'font-semibold text-gray-800';
+                    } else {
+                        el.className = baseClasses + 'text-gray-400';
+                    }
+                });
+
+                if (state.currentStep === 4) {
+                    updateFinancialsFromInputs();
+                }
+                if (state.currentStep === 5) {
+                    const totalNeeded = state.finances.capex + state.finances.fixed;
+                    document.getElementById('display-capital-needed').innerText = `$${totalNeeded.toLocaleString()}`;
+                }
+                if (state.currentStep === 6) {
+                    updatePricingFromInputs();
+                }
+                if (state.currentStep === 7) {
+                    const age = document.getElementById('in-age').value || "Público General";
+                    const loc = document.getElementById('in-location').value || "Varias zonas";
+                    document.getElementById('reminder-audience').innerText = `${age} en ${loc}`;
+                }
+
+            } else {
+                document.getElementById('summary-content').classList.remove('step-hidden');
+                document.getElementById('controls-container').style.display = 'none';
+                document.getElementById('progress-indicator').innerText = `Completado`;
+                generateSummary();
+            }
+        }
+
+        function renderResources() {
+            const list = document.getElementById('resource-list');
+            list.innerHTML = state.resources.map(r => `<li class="flex items-center text-gray-700 before:content-['✓'] before:mr-2 before:text-[#4a6b5d] font-semibold">${r}</li>`).join('');
+            if (state.resources.length === 0) list.innerHTML = `<li class="text-gray-400 text-sm italic p-2">Aún no has agregado recursos.</li>`;
+        }
+
+        function updateFinancialsFromInputs() {
+            state.finances.capex = parseFloat(document.getElementById('in-capex').value) || 0;
+            state.finances.fixed = parseFloat(document.getElementById('in-fixed').value) || 0;
+            state.finances.variable = parseFloat(document.getElementById('in-variable').value) || 0;
+            renderBudgetChart();
+        }
+
+        function updatePricingFromInputs() {
+            state.finances.price = parseFloat(document.getElementById('in-price').value) || 0;
+
+            let beUnits = 0;
+            if (state.finances.price > state.finances.variable) {
+                beUnits = Math.ceil(state.finances.fixed / (state.finances.price - state.finances.variable));
+                document.getElementById('display-breakeven').innerText = `${beUnits} uds`;
+                document.getElementById('display-breakeven').classList.remove('text-red-600');
+                document.getElementById('display-breakeven').classList.add('accent-text');
+            } else {
+                document.getElementById('display-breakeven').innerText = `Inviable`;
+                document.getElementById('display-breakeven').classList.add('text-red-600');
+                document.getElementById('display-breakeven').classList.remove('accent-text');
+            }
+            renderBreakEvenChart(beUnits);
+        }
+
+        function renderBudgetChart() {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            if (budgetChartInstance) budgetChartInstance.destroy();
+
+            budgetChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Inversión Inicial (CAPEX)', 'Costos Fijos', 'Costo Variable (10 uds)'],
+                    datasets: [{
+                        data: [state.finances.capex, state.finances.fixed, state.finances.variable * 10],
+                        backgroundColor: ['#eab308', '#51832f', '#94a3b8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function renderBreakEvenChart(beUnits) {
+            const ctx = document.getElementById('breakEvenChart').getContext('2d');
+            if (breakEvenChartInstance) breakEvenChartInstance.destroy();
+
+            const maxUnits = beUnits > 0 ? beUnits * 2 : 100;
+            const labels = [];
+            const costData = [];
+            const revData = [];
+
+            let step = Math.max(1, Math.floor(maxUnits / 10));
+
+            for (let i = 0; i <= maxUnits; i += step) {
+                labels.push(i);
+                costData.push(state.finances.fixed + (state.finances.variable * i));
+                revData.push(state.finances.price * i);
+            }
+
+            breakEvenChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Costos Totales', data: costData, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.1, borderWidth: 2 },
+                        { label: 'Ingresos', data: revData, borderColor: '#51832f', backgroundColor: 'transparent', tension: 0.1, borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: { mode: 'index', intersect: false },
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Dinero ($)' }, beginAtZero: true },
+                        x: { title: { display: true, text: 'Unidades Vendidas' } }
+                    }
+                }
+            });
+        }
+
+        function generateSummary() {
+            document.getElementById('sum-name').innerText = document.getElementById('in-name').value || 'Proyecto Sin Nombre';
+            document.getElementById('sum-desc').innerText = document.getElementById('in-description').value || 'Sin descripción';
+            document.getElementById('sum-age').innerText = document.getElementById('in-age').value || 'Edad no definida';
+            document.getElementById('sum-loc').innerText = document.getElementById('in-location').value || 'Ubicación no definida';
+            document.getElementById('sum-exp').innerText = document.getElementById('in-expansion').value || 'Sin plan de expansión';
+
+            document.getElementById('sum-capex').innerText = `$${state.finances.capex.toLocaleString()}`;
+            document.getElementById('sum-fixed').innerText = `$${state.finances.fixed.toLocaleString()}`;
+            document.getElementById('sum-var').innerText = `$${state.finances.variable.toLocaleString()}`;
+            document.getElementById('sum-price').innerText = `$${state.finances.price.toLocaleString()}`;
+
+            let beUnits = state.finances.price > state.finances.variable ? Math.ceil(state.finances.fixed / (state.finances.price - state.finances.variable)) : 'N/A';
+            document.getElementById('sum-breakeven').innerText = beUnits;
+        }
+
+        document.getElementById('btn-back-to-edit').addEventListener('click', () => {
+            state.currentStep = state.totalSteps; // Los devuelve al paso 8 para seguir editando
+            updateUI();
+        });
+
+        // Hacemos que la ruta lateral sea clickeable
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const targetStep = parseInt(e.currentTarget.getAttribute('data-step'));
+                if (targetStep >= 1 && targetStep <= state.totalSteps) {
+                    state.currentStep = targetStep;
+                    updateUI();
+                }
+            });
+        });
+
+        document.getElementById('btn-download-pdf').addEventListener('click', () => {
+            const element = document.getElementById('summary-content');
+            const btnContainer = document.getElementById('pdf-action-container');
+
+            // Ocultar temporalmente el botón para que no salga impreso en el PDF
+            btnContainer.style.display = 'none';
+
+            // Generar un nombre de archivo dinámico basado en el nombre del proyecto
+            const projectName = document.getElementById('in-name').value || 'Proyecto';
+            const safeFileName = projectName.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_resumen.pdf';
+
+            const opt = {
+                margin: 15,
+                filename: safeFileName,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generar y descargar el PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restaurar el botón en la pantalla una vez terminada la descarga
+                btnContainer.style.display = 'block';
+            });
+        });
+
+        updateUI();
+        renderResources();
+    </script>
+</body>
+
+</html>
