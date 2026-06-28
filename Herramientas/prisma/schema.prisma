@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================
+// Modelos de Autenticación (NextAuth)
+// ============================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Configuración de personas (nombres mostrados en la app)
+  persona1Name  String    @default("Persona 1")
+  persona2Name  String    @default("Persona 2")
+
+  // Visibilidad: qué personas se muestran en dashboards y listas
+  showPersona1  Boolean   @default(true)
+  showPersona2  Boolean   @default(true)
+
+  // Configuración de alertas por WhatsApp
+  whatsappEnabled  Boolean  @default(false)
+  whatsappNumber   String?
+
+  accounts      Account[]
+  sessions      Session[]
+  transactions  Transaction[]
+  goals         Goal[]
+  reminders     Reminder[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================
+// Modelos de Finanzas
+// ============================
+
+model Transaction {
+  id        String   @id @default(cuid())
+  userId    String
+  date      String   // formato YYYY-MM-DD
+  desc      String
+  amount    Float
+  type      String   // ingreso | gasto | inversion
+  method    String   // efectivo | transferencia | tc | billetera
+  category  String
+  owner     String   // persona1 | persona2 | pareja
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, type])
+  @@index([userId, date])
+}
+
+model Goal {
+  id            String   @id @default(cuid())
+  userId        String
+  title         String
+  targetAmount  Float
+  currentAmount Float    @default(0)
+  owner         String   // persona1 | persona2 | pareja
+  type          String   // ahorro | vacaciones | compras | etc
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  date      String   // formato YYYY-MM-DD
+  amount    Float    @default(0)
+  notified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, date])
+}

@@ -1,0 +1,777 @@
+     1→     1→import React, { useState, useEffect, useMemo } from 'react';
+     2→     2→import { 
+     3→     3→  PieChart, Wallet, Calculator, Bell, PlusCircle, 
+     4→     4→  TrendingUp, TrendingDown, Landmark, CreditCard,
+     5→     5→  Calendar, CheckCircle, AlertCircle, ArrowRight, Activity,
+     6→     6→  Users, Target
+     7→     7→} from 'lucide-react';
+     8→     8→
+     9→     9→// --- UTILIDADES FINANCIERAS Y DE CATEGORIZACIÓN ---
+    10→    10→
+    11→    11→const formatCurrency = (amount) => {
+    12→    12→  return new Intl.NumberFormat('es-AR', {
+    13→    13→    style: 'currency',
+    14→    14→    currency: 'ARS',
+    15→    15→  }).format(amount);
+    16→    16→};
+    17→    17→
+    18→    18→const formatPercent = (amount) => {
+    19→    19→  return new Intl.NumberFormat('es-AR', {
+    20→    20→    style: 'percent',
+    21→    21→    minimumFractionDigits: 2,
+    22→    22→  }).format(amount / 100);
+    23→    23→};
+    24→    24→
+    25→    25→const autoCategorizeExpense = (desc) => {
+    26→    26→  const lowerDesc = desc.toLowerCase();
+    27→    27→  if (/(café|cafe|kiosco|golosina|propina|helado|snack|agua|peaje)/.test(lowerDesc)) return 'Hormiga';
+    28→    28→  if (/(alquiler|expensas|internet|luz|agua|gas|seguro|colegio|prepaga|arca|afip|monotributo|patente|impuesto)/.test(lowerDesc)) return 'Fijo';
+    29→    29→  if (/(supermercado|super|farmacia|transporte|sube|nafta|combustible|carniceria|verdulería|medicamento)/.test(lowerDesc)) return 'Variable Esencial';
+    30→    30→  if (/(salida|cine|ropa|restaurante|delivery|pedidosya|rappi|suscripcion|netflix|spotify|juego|recital|viaje)/.test(lowerDesc)) return 'Variable Prescindible';
+    31→    31→  return 'Otro Gasto';
+    32→    32→};
+    33→    33→
+    34→    34→// --- COMPONENTES PRINCIPALES ---
+    35→    35→
+    36→    36→export default function App() {
+    37→    37→  const [activeTab, setActiveTab] = useState('dashboard');
+    38→    38→  
+    39→    39→  // Estado en memoria (Inicializado con datos de prueba)
+    40→    40→  const [transactions, setTransactions] = useState([
+    41→    41→    { id: 1, date: '2026-06-15', desc: 'Sueldo / Honorarios', amount: 1500000, type: 'ingreso', method: 'transferencia', category: 'Ingresos', owner: 'persona1' },
+    42→    42→    { id: 2, date: '2026-06-16', desc: 'Supermercado Coto', amount: 85000, type: 'gasto', method: 'tc', category: 'Variable Esencial', owner: 'pareja' },
+    43→    43→    { id: 3, date: '2026-06-17', desc: 'Pago Monotributo ARCA', amount: 45000, type: 'gasto', method: 'transferencia', category: 'Fijo', owner: 'persona1' },
+    44→    44→    { id: 4, date: '2026-06-18', desc: 'Café de especialidad', amount: 4500, type: 'gasto', method: 'efectivo', category: 'Hormiga', owner: 'persona2' },
+    45→    45→    { id: 5, date: '2026-06-19', desc: 'Compra CEDEARs SPY', amount: 200000, type: 'inversion', method: 'transferencia', category: 'Inversiones', owner: 'persona1' },
+    46→    46→    { id: 6, date: '2026-06-20', desc: 'Sueldo Persona 2', amount: 1200000, type: 'ingreso', method: 'transferencia', category: 'Ingresos', owner: 'persona2' },
+    47→    47→  ]);
+    48→    48→
+    49→    49→  const [goals, setGoals] = useState([
+    50→    50→    { id: 1, title: 'Viaje a Bariloche', targetAmount: 2000000, currentAmount: 500000, owner: 'pareja', type: 'vacaciones' },
+    51→    51→    { id: 2, title: 'Fondo Emergencia P1', targetAmount: 1000000, currentAmount: 200000, owner: 'persona1', type: 'ahorro' },
+    52→    52→    { id: 3, title: 'Cambiar Celular P2', targetAmount: 800000, currentAmount: 150000, owner: 'persona2', type: 'compras' },
+    53→    53→  ]);
+    54→    54→
+    55→    55→  const [reminders, setReminders] = useState([
+    56→    56→    { id: 1, title: 'Vencimiento Tarjeta Visa', date: '2026-06-25', amount: 340000, notified: false },
+    57→    57→    { id: 2, title: 'Recategorización Monotributo', date: '2026-07-20', amount: 0, notified: false },
+    58→    58→  ]);
+    59→    59→
+    60→    60→  // Cálculos del Dashboard
+    61→    61→  const summary = useMemo(() => {
+    62→    62→    let ingresos = 0, gastos = 0, inversiones = 0;
+    63→    63→    const gastosPorCategoria = { 'Fijo': 0, 'Variable Esencial': 0, 'Variable Prescindible': 0, 'Hormiga': 0, 'Otro Gasto': 0 };
+    64→    64→
+    65→    65→    transactions.forEach(t => {
+    66→    66→      const amt = parseFloat(t.amount);
+    67→    67→      if (t.type === 'ingreso') ingresos += amt;
+    68→    68→      if (t.type === 'gasto') {
+    69→    69→        gastos += amt;
+    70→    70→        if (gastosPorCategoria[t.category] !== undefined) {
+    71→    71→          gastosPorCategoria[t.category] += amt;
+    72→    72→        } else {
+    73→    73→          gastosPorCategoria['Otro Gasto'] += amt;
+    74→    74→        }
+    75→    75→      }
+    76→    76→      if (t.type === 'inversion') inversiones += amt;
+    77→    77→    });
+    78→    78→
+    79→    79→    return { ingresos, gastos, inversiones, balance: ingresos - gastos - inversiones, gastosPorCategoria };
+    80→    80→  }, [transactions]);
+    81→    81→
+    82→    82→  const addTransaction = (t) => {
+    83→    83→    setTransactions([{ ...t, id: Date.now() }, ...transactions]);
+    84→    84→  };
+    85→    85→
+    86→    86→  const addReminder = (r) => {
+    87→    87→    setReminders([...reminders, { ...r, id: Date.now(), notified: false }]);
+    88→    88→  };
+    89→    89→
+    90→    90→  return (
+    91→    91→    <div className="flex h-screen bg-slate-50 text-slate-900 font-sans">
+    92→    92→      {/* Sidebar Navigation */}
+    93→    93→      <aside className="w-64 bg-slate-900 text-white flex flex-col">
+    94→    94→        <div className="p-6">
+    95→    95→          <h1 className="text-2xl font-bold flex items-center gap-2 text-blue-400">
+    96→    96→            <Activity className="w-6 h-6" /> Finanzas AR
+    97→    97→          </h1>
+    98→    98→          <p className="text-xs text-slate-400 mt-1">Modo Contador Experto</p>
+    99→    99→        </div>
+   100→   100→        <nav className="flex-1 px-4 space-y-2">
+   101→   101→          <NavItem icon={<PieChart />} label="Dashboard" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+   102→   102→          <NavItem icon={<Users />} label="Finanzas en Pareja" active={activeTab === 'couple'} onClick={() => setActiveTab('couple')} />
+   103→   103→          <NavItem icon={<PlusCircle />} label="Nueva Operación" active={activeTab === 'new'} onClick={() => setActiveTab('new')} />
+   104→   104→          <NavItem icon={<Wallet />} label="Movimientos" active={activeTab === 'transactions'} onClick={() => setActiveTab('transactions')} />
+   105→   105→          <NavItem icon={<Calculator />} label="Calculadoras" active={activeTab === 'calculators'} onClick={() => setActiveTab('calculators')} />
+   106→   106→          <NavItem icon={<Bell />} label="Vencimientos & Alertas" active={activeTab === 'reminders'} onClick={() => setActiveTab('reminders')} />
+   107→   107→        </nav>
+   108→   108→      </aside>
+   109→   109→
+   110→   110→      {/* Main Content */}
+   111→   111→      <main className="flex-1 overflow-y-auto p-8">
+   112→   112→        {activeTab === 'dashboard' && <Dashboard summary={summary} />}
+   113→   113→        {activeTab === 'couple' && <CoupleDashboard transactions={transactions} goals={goals} />}
+   114→   114→        {activeTab === 'new' && <NewTransactionForm onAdd={addTransaction} onNavigate={() => setActiveTab('transactions')} />}
+   115→   115→        {activeTab === 'transactions' && <TransactionList transactions={transactions} />}
+   116→   116→        {activeTab === 'calculators' && <Calculators />}
+   117→   117→        {activeTab === 'reminders' && <Reminders reminders={reminders} onAdd={addReminder} />}
+   118→   118→      </main>
+   119→   119→    </div>
+   120→   120→  );
+   121→   121→}
+   122→   122→
+   123→   123→// --- SUB-COMPONENTES ---
+   124→   124→
+   125→   125→function NavItem({ icon, label, active, onClick }) {
+   126→   126→  return (
+   127→   127→    <button 
+   128→   128→      onClick={onClick}
+   129→   129→      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}
+   130→   130→    >
+   131→   131→      {React.cloneElement(icon, { className: 'w-5 h-5' })}
+   132→   132→      <span className="font-medium">{label}</span>
+   133→   133→    </button>
+   134→   134→  );
+   135→   135→}
+   136→   136→
+   137→   137→function Dashboard({ summary }) {
+   138→   138→  const categories = Object.entries(summary.gastosPorCategoria).filter(([_, val]) => val > 0);
+   139→   139→  
+   140→   140→  return (
+   141→   141→    <div className="space-y-6">
+   142→   142→      <h2 className="text-3xl font-bold text-slate-800">Resumen Financiero</h2>
+   143→   143→      
+   144→   144→      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+   145→   145→        <StatCard title="Saldo Disponible" amount={summary.balance} icon={<Wallet className="w-8 h-8 text-blue-500" />} color="border-blue-500" />
+   146→   146→        <StatCard title="Ingresos Totales" amount={summary.ingresos} icon={<TrendingUp className="w-8 h-8 text-emerald-500" />} color="border-emerald-500" />
+   147→   147→        <StatCard title="Gastos Totales" amount={summary.gastos} icon={<TrendingDown className="w-8 h-8 text-rose-500" />} color="border-rose-500" />
+   148→   148→        <StatCard title="Inversiones" amount={summary.inversiones} icon={<Landmark className="w-8 h-8 text-indigo-500" />} color="border-indigo-500" />
+   149→   149→      </div>
+   150→   150→
+   151→   151→      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+   152→   152→        <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+   153→   153→          <PieChart className="w-5 h-5 text-slate-500" /> 
+   154→   154→          Análisis de Gastos por Categoría
+   155→   155→        </h3>
+   156→   156→        {summary.gastos === 0 ? (
+   157→   157→          <p className="text-slate-500 italic">No hay gastos registrados para analizar.</p>
+   158→   158→        ) : (
+   159→   159→          <div className="space-y-4">
+   160→   160→            {categories.sort((a,b) => b[1] - a[1]).map(([cat, amount]) => {
+   161→   161→              const percent = ((amount / summary.gastos) * 100).toFixed(1);
+   162→   162→              let color = 'bg-slate-200';
+   163→   163→              if (cat === 'Hormiga') color = 'bg-orange-400';
+   164→   164→              if (cat === 'Fijo') color = 'bg-blue-500';
+   165→   165→              if (cat === 'Variable Esencial') color = 'bg-emerald-400';
+   166→   166→              if (cat === 'Variable Prescindible') color = 'bg-purple-400';
+   167→   167→
+   168→   168→              return (
+   169→   169→                <div key={cat}>
+   170→   170→                  <div className="flex justify-between text-sm mb-1">
+   171→   171→                    <span className="font-medium text-slate-700">{cat}</span>
+   172→   172→                    <span className="text-slate-600">{formatCurrency(amount)} ({percent}%)</span>
+   173→   173→                  </div>
+   174→   174→                  <div className="w-full bg-slate-100 rounded-full h-2.5">
+   175→   175→                    <div className={`${color} h-2.5 rounded-full`} style={{ width: `${percent}%` }}></div>
+   176→   176→                  </div>
+   177→   177→                </div>
+   178→   178→              );
+   179→   179→            })}
+   180→   180→          </div>
+   181→   181→        )}
+   182→   182→      </div>
+   183→   183→      
+   184→   184→      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+   185→   185→        <div className="flex">
+   186→   186→          <div className="flex-shrink-0">
+   187→   187→            <AlertCircle className="h-5 w-5 text-blue-400" />
+   188→   188→          </div>
+   189→   189→          <div className="ml-3">
+   190→   190→            <p className="text-sm text-blue-700">
+   191→   191→              <strong>Tip Fiscal:</strong> Recuerda que si eres Monotributista, tus gastos y consumos con tarjeta de crédito son monitoreados por ARCA. Mantén tus gastos (Categorías Fijos + Variables + Hormiga) por debajo del límite de tu categoría de facturación para evitar exclusiones de oficio.
+   192→   192→            </p>
+   193→   193→          </div>
+   194→   194→        </div>
+   195→   195→      </div>
+   196→   196→    </div>
+   197→   197→  );
+   198→   198→}
+   199→   199→
+   200→   200→function StatCard({ title, amount, icon, color }) {
+   201→   201→  return (
+   202→   202→    <div className={`bg-white p-6 rounded-xl shadow-sm border-b-4 ${color}`}>
+   203→   203→      <div className="flex justify-between items-start">
+   204→   204→        <div>
+   205→   205→          <p className="text-sm text-slate-500 font-medium">{title}</p>
+   206→   206→          <h4 className="text-2xl font-bold mt-2 text-slate-800">{formatCurrency(amount)}</h4>
+   207→   207→        </div>
+   208→   208→        <div className="p-3 bg-slate-50 rounded-lg">
+   209→   209→          {icon}
+   210→   210→        </div>
+   211→   211→      </div>
+   212→   212→    </div>
+   213→   213→  );
+   214→   214→}
+   215→   215→
+   216→   216→function NewTransactionForm({ onAdd, onNavigate }) {
+   217→   217→  const [formData, setFormData] = useState({
+   218→   218→    date: new Date().toISOString().split('T')[0],
+   219→   219→    desc: '',
+   220→   220→    amount: '',
+   221→   221→    type: 'gasto',
+   222→   222→    method: 'transferencia',
+   223→   223→    owner: 'persona1'
+   224→   224→  });
+   225→   225→
+   226→   226→  const [previewCat, setPreviewCat] = useState('');
+   227→   227→
+   228→   228→  useEffect(() => {
+   229→   229→    if (formData.type === 'gasto' && formData.desc.length > 2) {
+   230→   230→      setPreviewCat(autoCategorizeExpense(formData.desc));
+   231→   231→    } else {
+   232→   232→      setPreviewCat('');
+   233→   233→    }
+   234→   234→  }, [formData.desc, formData.type]);
+   235→   235→
+   236→   236→  const handleSubmit = (e) => {
+   237→   237→    e.preventDefault();
+   238→   238→    if (!formData.desc || !formData.amount) return;
+   239→   239→
+   240→   240→    let category = '';
+   241→   241→    if (formData.type === 'ingreso') category = 'Ingresos';
+   242→   242→    else if (formData.type === 'inversion') category = 'Inversiones';
+   243→   243→    else category = autoCategorizeExpense(formData.desc);
+   244→   244→
+   245→   245→    onAdd({
+   246→   246→      ...formData,
+   247→   247→      amount: parseFloat(formData.amount),
+   248→   248→      category
+   249→   249→    });
+   250→   250→    onNavigate();
+   251→   251→  };
+   252→   252→
+   253→   253→  return (
+   254→   254→    <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+   255→   255→      <h2 className="text-2xl font-bold mb-6 text-slate-800 border-b pb-4">Registrar Operación</h2>
+   256→   256→      <form onSubmit={handleSubmit} className="space-y-5">
+   257→   257→        
+   258→   258→        <div className="grid grid-cols-2 gap-4">
+   259→   259→          <div>
+   260→   260→            <label className="block text-sm font-medium text-slate-700 mb-1">Tipo de Operación</label>
+   261→   261→            <select 
+   262→   262→              value={formData.type} 
+   263→   263→              onChange={e => setFormData({...formData, type: e.target.value})}
+   264→   264→              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+   265→   265→            >
+   266→   266→              <option value="gasto">Gasto / Egreso</option>
+   267→   267→              <option value="ingreso">Ingreso / Cobro</option>
+   268→   268→              <option value="inversion">Inversión (FCI, MEP, etc.)</option>
+   269→   269→            </select>
+   270→   270→          </div>
+   271→   271→          <div>
+   272→   272→            <label className="block text-sm font-medium text-slate-700 mb-1">Fecha</label>
+   273→   273→            <input 
+   274→   274→              type="date" 
+   275→   275→              value={formData.date}
+   276→   276→              onChange={e => setFormData({...formData, date: e.target.value})}
+   277→   277→              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+   278→   278→              required
+   279→   279→            />
+   280→   280→          </div>
+   281→   281→        </div>
+   282→   282→
+   283→   283→        <div>
+   284→   284→          <label className="block text-sm font-medium text-slate-700 mb-1">¿A quién corresponde?</label>
+   285→   285→          <div className="flex gap-4 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+   286→   286→            <label className="flex items-center gap-2 cursor-pointer">
+   287→   287→              <input type="radio" name="owner" value="persona1" checked={formData.owner === 'persona1'} onChange={e => setFormData({...formData, owner: e.target.value})} className="text-blue-600 focus:ring-blue-500" />
+   288→   288→              <span className="text-sm text-slate-700 font-medium">Persona 1</span>
+   289→   289→            </label>
+   290→   290→            <label className="flex items-center gap-2 cursor-pointer">
+   291→   291→              <input type="radio" name="owner" value="persona2" checked={formData.owner === 'persona2'} onChange={e => setFormData({...formData, owner: e.target.value})} className="text-blue-600 focus:ring-blue-500" />
+   292→   292→              <span className="text-sm text-slate-700 font-medium">Persona 2</span>
+   293→   293→            </label>
+   294→   294→            <label className="flex items-center gap-2 cursor-pointer">
+   295→   295→              <input type="radio" name="owner" value="pareja" checked={formData.owner === 'pareja'} onChange={e => setFormData({...formData, owner: e.target.value})} className="text-purple-600 focus:ring-purple-500" />
+   296→   296→              <span className="text-sm text-purple-700 font-medium">Gasto Compartido (Pareja)</span>
+   297→   297→            </label>
+   298→   298→          </div>
+   299→   299→        </div>
+   300→   300→
+   301→   301→        <div>
+   302→   302→          <label className="block text-sm font-medium text-slate-700 mb-1">Concepto / Descripción</label>
+   303→   303→          <input 
+   304→   304→            type="text" 
+   305→   305→            placeholder="Ej. Supermercado, Alquiler, Sueldo..."
+   306→   306→            value={formData.desc}
+   307→   307→            onChange={e => setFormData({...formData, desc: e.target.value})}
+   308→   308→            className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+   309→   309→            required
+   310→   310→          />
+   311→   311→          {previewCat && (
+   312→   312→            <p className="text-sm mt-2 text-slate-500 flex items-center gap-1">
+   313→   313→              <CheckCircle className="w-4 h-4 text-emerald-500" />
+   314→   314→              Se categorizará automáticamente como: <strong className="text-blue-600">{previewCat}</strong>
+   315→   315→            </p>
+   316→   316→          )}
+   317→   317→        </div>
+   318→   318→
+   319→   319→        <div className="grid grid-cols-2 gap-4">
+   320→   320→          <div>
+   321→   321→            <label className="block text-sm font-medium text-slate-700 mb-1">Monto (ARS)</label>
+   322→   322→            <div className="relative">
+   323→   323→              <span className="absolute left-3 top-3 text-slate-500">$</span>
+   324→   324→              <input 
+   325→   325→                type="number" 
+   326→   326→                step="0.01"
+   327→   327→                min="0"
+   328→   328→                value={formData.amount}
+   329→   329→                onChange={e => setFormData({...formData, amount: e.target.value})}
+   330→   330→                className="w-full pl-8 p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+   331→   331→                required
+   332→   332→              />
+   333→   333→            </div>
+   334→   334→          </div>
+   335→   335→          <div>
+   336→   336→            <label className="block text-sm font-medium text-slate-700 mb-1">Método de Pago</label>
+   337→   337→            <select 
+   338→   338→              value={formData.method} 
+   339→   339→              onChange={e => setFormData({...formData, method: e.target.value})}
+   340→   340→              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+   341→   341→            >
+   342→   342→              <option value="efectivo">Efectivo</option>
+   343→   343→              <option value="transferencia">Transferencia / Débito</option>
+   344→   344→              <option value="tc">Tarjeta de Crédito</option>
+   345→   345→              <option value="billetera">Billetera Virtual (MercadoPago)</option>
+   346→   346→            </select>
+   347→   347→          </div>
+   348→   348→        </div>
+   349→   349→
+   350→   350→        <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors flex justify-center items-center gap-2 mt-4">
+   351→   351→          <PlusCircle className="w-5 h-5" /> Guardar Operación
+   352→   352→        </button>
+   353→   353→      </form>
+   354→   354→    </div>
+   355→   355→  );
+   356→   356→}
+   357→   357→
+   358→   358→function TransactionList({ transactions }) {
+   359→   359→  return (
+   360→   360→    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+   361→   361→      <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+   362→   362→        <h2 className="text-xl font-bold text-slate-800">Últimos Movimientos</h2>
+   363→   363→      </div>
+   364→   364→      <div className="overflow-x-auto">
+   365→   365→        <table className="w-full text-left border-collapse">
+   366→   366→          <thead>
+   367→   367→            <tr className="bg-slate-50 text-slate-600 text-sm border-b">
+   368→   368→              <th className="p-4 font-medium">Fecha</th>
+   369→   369→              <th className="p-4 font-medium">Concepto</th>
+   370→   370→              <th className="p-4 font-medium">Categoría</th>
+   371→   371→              <th className="p-4 font-medium">Método</th>
+   372→   372→              <th className="p-4 font-medium text-right">Monto</th>
+   373→   373→            </tr>
+   374→   374→          </thead>
+   375→   375→          <tbody>
+   376→   376→            {transactions.map(t => (
+   377→   377→              <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+   378→   378→                <td className="p-4 text-sm text-slate-600">{t.date}</td>
+   379→   379→                <td className="p-4 font-medium text-slate-800">{t.desc}</td>
+   380→   380→                <td className="p-4 flex flex-wrap gap-2 items-center">
+   381→   381→                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase
+   382→   382→                    ${t.owner === 'persona1' ? 'bg-blue-100 text-blue-700' : ''}
+   383→   383→                    ${t.owner === 'persona2' ? 'bg-pink-100 text-pink-700' : ''}
+   384→   384→                    ${t.owner === 'pareja' ? 'bg-purple-100 text-purple-700' : ''}
+   385→   385→                  `}>
+   386→   386→                    {t.owner === 'persona1' ? 'P1' : t.owner === 'persona2' ? 'P2' : 'Pareja'}
+   387→   387→                  </span>
+   388→   388→                  <span className={`text-xs px-2 py-1 rounded-full font-medium
+   389→   389→                    ${t.type === 'ingreso' ? 'bg-emerald-100 text-emerald-700' : ''}
+   390→   390→                    ${t.type === 'inversion' ? 'bg-indigo-100 text-indigo-700' : ''}
+   391→   391→                    ${t.category === 'Hormiga' ? 'bg-orange-100 text-orange-700' : ''}
+   392→   392→                    ${t.category === 'Fijo' ? 'bg-blue-100 text-blue-700' : ''}
+   393→   393→                    ${t.category === 'Variable Esencial' ? 'bg-emerald-100 text-emerald-700' : ''}
+   394→   394→                    ${t.category === 'Variable Prescindible' ? 'bg-purple-100 text-purple-700' : ''}
+   395→   395→                  `}>
+   396→   396→                    {t.category}
+   397→   397→                  </span>
+   398→   398→                </td>
+   399→   399→                <td className="p-4 text-sm text-slate-600 capitalize flex items-center gap-2">
+   400→   400→                  {t.method === 'tc' && <CreditCard className="w-4 h-4"/>}
+   401→   401→                  {t.method === 'transferencia' && <ArrowRight className="w-4 h-4"/>}
+   402→   402→                  {t.method === 'efectivo' && <Landmark className="w-4 h-4"/>}
+   403→   403→                  {t.method === 'tc' ? 'T. Crédito' : t.method}
+   404→   404→                </td>
+   405→   405→                <td className={`p-4 text-right font-bold ${t.type === 'ingreso' ? 'text-emerald-600' : t.type === 'inversion' ? 'text-indigo-600' : 'text-slate-800'}`}>
+   406→   406→                  {t.type === 'gasto' ? '-' : '+'}{formatCurrency(t.amount)}
+   407→   407→                </td>
+   408→   408→              </tr>
+   409→   409→            ))}
+   410→   410→            {transactions.length === 0 && (
+   411→   411→              <tr><td colSpan="5" className="p-8 text-center text-slate-500">No hay movimientos registrados.</td></tr>
+   412→   412→            )}
+   413→   413→          </tbody>
+   414→   414→        </table>
+   415→   415→      </div>
+   416→   416→    </div>
+   417→   417→  );
+   418→   418→}
+   419→   419→
+   420→   420→function Calculators() {
+   421→   421→  const [calcTab, setCalcTab] = useState('tasas');
+   422→   422→
+   423→   423→  return (
+   424→   424→    <div className="space-y-6">
+   425→   425→      <h2 className="text-3xl font-bold text-slate-800 mb-6">Herramientas & Calculadoras</h2>
+   426→   426→      
+   427→   427→      <div className="flex gap-2 border-b border-slate-200 pb-px">
+   428→   428→        <button onClick={() => setCalcTab('tasas')} className={`px-4 py-2 font-medium border-b-2 transition-colors ${calcTab === 'tasas' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>TNA a TEA (Efectiva)</button>
+   429→   429→        <button onClick={() => setCalcTab('compuesto')} className={`px-4 py-2 font-medium border-b-2 transition-colors ${calcTab === 'compuesto' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>Interés Compuesto (FCI)</button>
+   430→   430→      </div>
+   431→   431→
+   432→   432→      {calcTab === 'tasas' && <CalcTasas />}
+   433→   433→      {calcTab === 'compuesto' && <CalcCompuesto />}
+   434→   434→    </div>
+   435→   435→  );
+   436→   436→}
+   437→   437→
+   438→   438→function CalcTasas() {
+   439→   439→  const [tna, setTna] = useState(40);
+   440→   440→  const [dias, setDias] = useState(30);
+   441→   441→
+   442→   442→  // Fórmula BCRA: TEA = ((1 + (TNA / 100) * (dias / 365)) ^ (365 / dias)) - 1
+   443→   443→  const m = 365 / dias;
+   444→   444→  const i = (tna / 100) * (dias / 365);
+   445→   445→  const tea = (Math.pow(1 + i, m) - 1) * 100;
+   446→   446→  const tem = (Math.pow(1 + (tea/100), 1/12) - 1) * 100;
+   447→   447→
+   448→   448→  return (
+   449→   449→    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 max-w-2xl">
+   450→   450→      <h3 className="text-lg font-bold mb-2">Calculadora de Tasa Efectiva (TEA)</h3>
+   451→   451→      <p className="text-sm text-slate-500 mb-6">Ideal para comparar rendimientos reales de Plazos Fijos tradicionales o Billeteras Virtuales según su capitalización.</p>
+   452→   452→      
+   453→   453→      <div className="grid grid-cols-2 gap-4 mb-6">
+   454→   454→        <div>
+   455→   455→          <label className="block text-sm font-medium text-slate-700 mb-1">Tasa Nominal Anual (TNA %)</label>
+   456→   456→          <input type="number" value={tna} onChange={e => setTna(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg focus:ring-blue-500 outline-none" />
+   457→   457→        </div>
+   458→   458→        <div>
+   459→   459→          <label className="block text-sm font-medium text-slate-700 mb-1">Renovación cada (días)</label>
+   460→   460→          <select value={dias} onChange={e => setDias(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg focus:ring-blue-500 outline-none">
+   461→   461→            <option value="1">1 día (Billeteras virtuales ej. MP)</option>
+   462→   462→            <option value="30">30 días (Plazo Fijo Tradicional)</option>
+   463→   463→            <option value="90">90 días</option>
+   464→   464→          </select>
+   465→   465→        </div>
+   466→   466→      </div>
+   467→   467→
+   468→   468→      <div className="bg-slate-50 p-6 rounded-lg border border-slate-200 space-y-4">
+   469→   469→        <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+   470→   470→          <span className="text-slate-600 font-medium">Tasa Efectiva Mensual (Rendimiento a 30 días):</span>
+   471→   471→          <span className="text-xl font-bold text-slate-800">{tem.toFixed(2)}%</span>
+   472→   472→        </div>
+   473→   473→        <div className="flex justify-between items-center">
+   474→   474→          <span className="text-slate-600 font-medium">Tasa Efectiva Anual (TEA):</span>
+   475→   475→          <span className="text-3xl font-bold text-emerald-600">{tea.toFixed(2)}%</span>
+   476→   476→        </div>
+   477→   477→      </div>
+   478→   478→    </div>
+   479→   479→  );
+   480→   480→}
+   481→   481→
+   482→   482→function CalcCompuesto() {
+   483→   483→  const [capital, setCapital] = useState(100000);
+   484→   484→  const [aporte, setAporte] = useState(20000);
+   485→   485→  const [tna, setTna] = useState(45);
+   486→   486→  const [anios, setAnios] = useState(5);
+   487→   487→
+   488→   488→  // Cálculo mensual aproximado
+   489→   489→  const r = (tna / 100) / 12;
+   490→   490→  const n = anios * 12;
+   491→   491→  // FV = P(1+r)^n + PMT [ ((1+r)^n - 1) / r ]
+   492→   492→  const fvPrincipal = capital * Math.pow(1 + r, n);
+   493→   493→  const fvAportes = aporte * ((Math.pow(1 + r, n) - 1) / r);
+   494→   494→  const montoTotal = fvPrincipal + fvAportes;
+   495→   495→  const capitalInvertido = capital + (aporte * n);
+   496→   496→  const interesesGanados = montoTotal - capitalInvertido;
+   497→   497→
+   498→   498→  return (
+   499→   499→    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8">
+   500→   500→      <div>
+   501→   501→        <h3 className="text-lg font-bold mb-2">Simulador Fondo Común / CEDEARs</h3>
+   502→   502→        <p className="text-sm text-slate-500 mb-6">Proyecta el crecimiento de tu dinero invirtiendo y reinvirtiendo ganancias a largo plazo.</p>
+   503→   503→        
+   504→   504→        <div className="space-y-4">
+   505→   505→          <div>
+   506→   506→            <label className="block text-sm font-medium text-slate-700 mb-1">Capital Inicial ($)</label>
+   507→   507→            <input type="number" value={capital} onChange={e => setCapital(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg outline-none" />
+   508→   508→          </div>
+   509→   509→          <div>
+   510→   510→            <label className="block text-sm font-medium text-slate-700 mb-1">Aporte Mensual ($)</label>
+   511→   511→            <input type="number" value={aporte} onChange={e => setAporte(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg outline-none" />
+   512→   512→          </div>
+   513→   513→          <div>
+   514→   514→            <label className="block text-sm font-medium text-slate-700 mb-1">Rendimiento Estimado (TNA %)</label>
+   515→   515→            <input type="number" value={tna} onChange={e => setTna(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg outline-none" />
+   516→   516→          </div>
+   517→   517→          <div>
+   518→   518→            <label className="block text-sm font-medium text-slate-700 mb-1">Años de Inversión</label>
+   519→   519→            <input type="number" value={anios} onChange={e => setAnios(Number(e.target.value))} className="w-full p-3 border border-slate-200 rounded-lg outline-none" />
+   520→   520→          </div>
+   521→   521→        </div>
+   522→   522→      </div>
+   523→   523→
+   524→   524→      <div className="bg-indigo-50 p-6 rounded-xl flex flex-col justify-center">
+   525→   525→        <h4 className="text-indigo-900 font-bold mb-6 text-center">Proyección a {anios} años</h4>
+   526→   526→        
+   527→   527→        <div className="space-y-4">
+   528→   528→          <div className="flex justify-between border-b border-indigo-200 pb-2">
+   529→   529→            <span className="text-indigo-700">Total Invertido (Tu bolsillo)</span>
+   530→   530→            <span className="font-semibold text-indigo-900">{formatCurrency(capitalInvertido)}</span>
+   531→   531→          </div>
+   532→   532→          <div className="flex justify-between border-b border-indigo-200 pb-2">
+   533→   533→            <span className="text-indigo-700">Intereses Ganados</span>
+   534→   534→            <span className="font-semibold text-emerald-600">+{formatCurrency(interesesGanados)}</span>
+   535→   535→          </div>
+   536→   536→          <div className="flex justify-between pt-4">
+   537→   537→            <span className="text-lg font-bold text-indigo-900">Monto Final</span>
+   538→   538→            <span className="text-2xl font-bold text-indigo-900">{formatCurrency(montoTotal)}</span>
+   539→   539→          </div>
+   540→   540→        </div>
+   541→   541→        <p className="text-xs text-indigo-500 mt-6 text-center">Nota: Los cálculos no descuentan la inflación futura. Si proyectás en Pesos ARS, recordá evaluar la TNA real frente a la inflación esperada.</p>
+   542→   542→      </div>
+   543→   543→    </div>
+   544→   544→  );
+   545→   545→}
+   546→   546→
+   547→   547→function Reminders({ reminders, onAdd }) {
+   548→   548→  const [showMockSuccess, setShowMockSuccess] = useState(false);
+   549→   549→  const [newReminder, setNewReminder] = useState({ title: '', date: '', amount: '' });
+   550→   550→
+   551→   551→  const simulateEmailAlert = () => {
+   552→   552→    setShowMockSuccess(true);
+   553→   553→    setTimeout(() => setShowMockSuccess(false), 4000);
+   554→   554→  };
+   555→   555→
+   556→   556→  const handleAdd = (e) => {
+   557→   557→    e.preventDefault();
+   558→   558→    if(newReminder.title && newReminder.date) {
+   559→   559→      onAdd({ ...newReminder, amount: Number(newReminder.amount) || 0 });
+   560→   560→      setNewReminder({ title: '', date: '', amount: '' });
+   561→   561→    }
+   562→   562→  }
+   563→   563→
+   564→   564→  return (
+   565→   565→    <div className="max-w-4xl mx-auto space-y-6">
+   566→   566→      <div className="flex justify-between items-end mb-6">
+   567→   567→        <div>
+   568→   568→          <h2 className="text-3xl font-bold text-slate-800">Alertas de Pagos</h2>
+   569→   569→          <p className="text-slate-500 mt-1">Evita recargos e intereses agendando tus vencimientos.</p>
+   570→   570→        </div>
+   571→   571→        <button onClick={simulateEmailAlert} className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+   572→   572→          <Bell className="w-4 h-4" /> Configurar Alertas al Mail
+   573→   573→        </button>
+   574→   574→      </div>
+   575→   575→
+   576→   576→      {showMockSuccess && (
+   577→   577→        <div className="bg-emerald-50 text-emerald-700 p-4 rounded-lg flex items-center gap-2 border border-emerald-200 mb-6">
+   578→   578→          <CheckCircle className="w-5 h-5" />
+   579→   579→          ¡Configuración exitosa! El sistema enviará un recordatorio al mail registrado 48hs antes de cada vencimiento. (Nota: Esto es una simulación visual en la versión web).
+   580→   580→        </div>
+   581→   581→      )}
+   582→   582→
+   583→   583→      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+   584→   584→        
+   585→   585→        {/* Formulario Nuevo Recordatorio */}
+   586→   586→        <div className="md:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+   587→   587→          <h3 className="font-bold mb-4 text-slate-700">Nuevo Vencimiento</h3>
+   588→   588→          <form onSubmit={handleAdd} className="space-y-4">
+   589→   589→            <div>
+   590→   590→              <label className="text-sm font-medium text-slate-600 block mb-1">Servicio / Tarjeta</label>
+   591→   591→              <input type="text" value={newReminder.title} onChange={e=>setNewReminder({...newReminder, title: e.target.value})} className="w-full p-2 border border-slate-200 rounded outline-none" required/>
+   592→   592→            </div>
+   593→   593→            <div>
+   594→   594→              <label className="text-sm font-medium text-slate-600 block mb-1">Fecha Límite</label>
+   595→   595→              <input type="date" value={newReminder.date} onChange={e=>setNewReminder({...newReminder, date: e.target.value})} className="w-full p-2 border border-slate-200 rounded outline-none" required/>
+   596→   596→            </div>
+   597→   597→            <div>
+   598→   598→              <label className="text-sm font-medium text-slate-600 block mb-1">Monto Estimado (Opcional)</label>
+   599→   599→              <input type="number" value={newReminder.amount} onChange={e=>setNewReminder({...newReminder, amount: e.target.value})} className="w-full p-2 border border-slate-200 rounded outline-none"/>
+   600→   600→            </div>
+   601→   601→            <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded font-medium hover:bg-blue-600">Agendar</button>
+   602→   602→          </form>
+   603→   603→        </div>
+   604→   604→
+   605→   605→        {/* Lista de Vencimientos */}
+   606→   606→        <div className="md:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+   607→   607→          <h3 className="font-bold mb-4 text-slate-700">Próximos a Vencer</h3>
+   608→   608→          <div className="space-y-3">
+   609→   609→            {reminders.sort((a,b) => new Date(a.date) - new Date(b.date)).map(r => {
+   610→   610→              const daysLeft = Math.ceil((new Date(r.date) - new Date()) / (1000 * 60 * 60 * 24));
+   611→   611→              const isUrgent = daysLeft <= 5;
+   612→   612→
+   613→   613→              return (
+   614→   614→                <div key={r.id} className={`flex justify-between items-center p-4 rounded-lg border ${isUrgent ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-100'}`}>
+   615→   615→                  <div className="flex items-center gap-4">
+   616→   616→                    <div className={`p-2 rounded-full ${isUrgent ? 'bg-red-100 text-red-600' : 'bg-slate-200 text-slate-600'}`}>
+   617→   617→                      <Calendar className="w-5 h-5" />
+   618→   618→                    </div>
+   619→   619→                    <div>
+   620→   620→                      <h4 className={`font-semibold ${isUrgent ? 'text-red-900' : 'text-slate-800'}`}>{r.title}</h4>
+   621→   621→                      <p className={`text-sm ${isUrgent ? 'text-red-700' : 'text-slate-500'}`}>
+   622→   622→                        Vence: {r.date} ({daysLeft > 0 ? `En ${daysLeft} días` : 'Vencido'})
+   623→   623→                      </p>
+   624→   624→                    </div>
+   625→   625→                  </div>
+   626→   626→                  {r.amount > 0 && (
+   627→   627→                    <div className="text-right font-bold text-slate-700">
+   628→   628→                      {formatCurrency(r.amount)}
+   629→   629→                    </div>
+   630→   630→                  )}
+   631→   631→                </div>
+   632→   632→              );
+   633→   633→            })}
+   634→   634→          </div>
+   635→   635→        </div>
+   636→   636→
+   637→   637→      </div>
+   638→   638→    </div>
+   639→   639→  );
+   640→   640→}
+   641→   641→
+   642→   642→function CoupleDashboard({ transactions, goals }) {
+   643→   643→  const stats = useMemo(() => {
+   644→   644→    const calc = {
+   645→   645→      persona1: { ingresos: 0, gastos: 0 },
+   646→   646→      persona2: { ingresos: 0, gastos: 0 },
+   647→   647→      pareja: { gastos: 0 }
+   648→   648→    };
+   649→   649→
+   650→   650→    transactions.forEach(t => {
+   651→   651→      const amt = parseFloat(t.amount);
+   652→   652→      if (t.owner === 'persona1') {
+   653→   653→        if (t.type === 'ingreso') calc.persona1.ingresos += amt;
+   654→   654→        if (t.type === 'gasto') calc.persona1.gastos += amt;
+   655→   655→      } else if (t.owner === 'persona2') {
+   656→   656→        if (t.type === 'ingreso') calc.persona2.ingresos += amt;
+   657→   657→        if (t.type === 'gasto') calc.persona2.gastos += amt;
+   658→   658→      } else if (t.owner === 'pareja') {
+   659→   659→        if (t.type === 'gasto') calc.pareja.gastos += amt;
+   660→   660→      }
+   661→   661→    });
+   662→   662→
+   663→   663→    // Se asume una división 50/50 de los gastos compartidos para calcular el saldo libre individual
+   664→   664→    const saldoP1 = calc.persona1.ingresos - calc.persona1.gastos - (calc.pareja.gastos / 2); 
+   665→   665→    const saldoP2 = calc.persona2.ingresos - calc.persona2.gastos - (calc.pareja.gastos / 2);
+   666→   666→
+   667→   667→    return { ...calc, saldoP1, saldoP2 };
+   668→   668→  }, [transactions]);
+   669→   669→
+   670→   670→  return (
+   671→   671→    <div className="space-y-6">
+   672→   672→      <div className="flex justify-between items-center mb-2">
+   673→   673→        <div>
+   674→   674→          <h2 className="text-3xl font-bold text-slate-800">Finanzas en Pareja</h2>
+   675→   675→          <p className="text-slate-500 mt-1">Monitoreo de ingresos individuales, egresos compartidos y metas conjuntas.</p>
+   676→   676→        </div>
+   677→   677→      </div>
+   678→   678→
+   679→   679→      {/* Tarjetas de Resumen Financiero */}
+   680→   680→      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+   681→   681→        <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500">
+   682→   682→          <h3 className="text-lg font-bold text-slate-700 flex items-center gap-2 mb-4"><Users className="w-5 h-5 text-blue-500"/> Persona 1</h3>
+   683→   683→          <div className="space-y-2 text-sm">
+   684→   684→            <div className="flex justify-between"><span className="text-slate-500">Ingresos:</span> <span className="font-medium text-emerald-600">{formatCurrency(stats.persona1.ingresos)}</span></div>
+   685→   685→            <div className="flex justify-between"><span className="text-slate-500">Gastos Propios:</span> <span className="font-medium text-rose-500">-{formatCurrency(stats.persona1.gastos)}</span></div>
+   686→   686→            <div className="flex justify-between"><span className="text-slate-500">50% Gastos Pareja:</span> <span className="font-medium text-rose-500">-{formatCurrency(stats.pareja.gastos / 2)}</span></div>
+   687→   687→            <div className="pt-2 border-t mt-2 flex justify-between font-bold text-base">
+   688→   688→              <span className="text-slate-700">Saldo Libre:</span> 
+   689→   689→              <span className={stats.saldoP1 >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatCurrency(stats.saldoP1)}</span>
+   690→   690→            </div>
+   691→   691→          </div>
+   692→   692→        </div>
+   693→   693→
+   694→   694→        <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-pink-500">
+   695→   695→          <h3 className="text-lg font-bold text-slate-700 flex items-center gap-2 mb-4"><Users className="w-5 h-5 text-pink-500"/> Persona 2</h3>
+   696→   696→          <div className="space-y-2 text-sm">
+   697→   697→            <div className="flex justify-between"><span className="text-slate-500">Ingresos:</span> <span className="font-medium text-emerald-600">{formatCurrency(stats.persona2.ingresos)}</span></div>
+   698→   698→            <div className="flex justify-between"><span className="text-slate-500">Gastos Propios:</span> <span className="font-medium text-rose-500">-{formatCurrency(stats.persona2.gastos)}</span></div>
+   699→   699→            <div className="flex justify-between"><span className="text-slate-500">50% Gastos Pareja:</span> <span className="font-medium text-rose-500">-{formatCurrency(stats.pareja.gastos / 2)}</span></div>
+   700→   700→            <div className="pt-2 border-t mt-2 flex justify-between font-bold text-base">
+   701→   701→              <span className="text-slate-700">Saldo Libre:</span> 
+   702→   702→              <span className={stats.saldoP2 >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatCurrency(stats.saldoP2)}</span>
+   703→   703→            </div>
+   704→   704→          </div>
+   705→   705→        </div>
+   706→   706→
+   707→   707→        <div className="bg-purple-50 p-6 rounded-xl shadow-sm border-t-4 border-purple-500 flex flex-col justify-center">
+   708→   708→          <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2 mb-2"><Target className="w-5 h-5 text-purple-500"/> Egresos Compartidos</h3>
+   709→   709→          <p className="text-sm text-purple-700 mb-4">Total de gastos de la pareja (alquiler, expensas, súper).</p>
+   710→   710→          <div className="text-3xl font-bold text-purple-800">
+   711→   711→            {formatCurrency(stats.pareja.gastos)}
+   712→   712→          </div>
+   713→   713→          <p className="text-xs text-purple-600 mt-2">* El sistema divide este monto a la mitad automáticamente al calcular los saldos libres individuales.</p>
+   714→   714→        </div>
+   715→   715→      </div>
+   716→   716→
+   717→   717→      {/* Sugerencias de Inversión (Regla del 20%) */}
+   718→   718→      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
+   719→   719→        <h3 className="text-lg font-bold text-emerald-900 mb-3 flex items-center gap-2"><TrendingUp className="w-5 h-5"/> Sugerencia de Inversión</h3>
+   720→   720→        <p className="text-sm text-emerald-800 mb-4">La regla financiera general recomienda destinar al menos el 20% de tu saldo libre (lo que te queda tras cubrir fijos y variables) a inversión o metas:</p>
+   721→   721→        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+   722→   722→          <div className="bg-white p-4 rounded-lg border border-emerald-100 shadow-sm flex flex-col justify-center">
+   723→   723→            <span className="block text-sm text-slate-500 mb-1">Aporte sugerido P1</span>
+   724→   724→            <strong className="text-emerald-600 text-xl">{stats.saldoP1 > 0 ? formatCurrency(stats.saldoP1 * 0.20) : '$0,00'}</strong>
+   725→   725→          </div>
+   726→   726→          <div className="bg-white p-4 rounded-lg border border-emerald-100 shadow-sm flex flex-col justify-center">
+   727→   727→            <span className="block text-sm text-slate-500 mb-1">Aporte sugerido P2</span>
+   728→   728→            <strong className="text-emerald-600 text-xl">{stats.saldoP2 > 0 ? formatCurrency(stats.saldoP2 * 0.20) : '$0,00'}</strong>
+   729→   729→          </div>
+   730→   730→          <div className="bg-emerald-600 p-4 rounded-lg shadow-sm text-white flex flex-col justify-center">
+   731→   731→            <span className="block text-sm text-emerald-100 mb-1">Fondo de Pareja Sugerido</span>
+   732→   732→            <strong className="text-2xl">{formatCurrency((Math.max(stats.saldoP1, 0) + Math.max(stats.saldoP2, 0)) * 0.10)}</strong>
+   733→   733→            <span className="block text-[11px] opacity-80 mt-1">* 10% del excedente combinado para metas comunes.</span>
+   734→   734→          </div>
+   735→   735→        </div>
+   736→   736→      </div>
+   737→   737→
+   738→   738→      {/* Tablero de Metas */}
+   739→   739→      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+   740→   740→        <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Target className="w-6 h-6 text-indigo-500"/> Tablero de Metas</h3>
+   741→   741→        
+   742→   742→        <div className="space-y-6">
+   743→   743→          {goals.map(goal => {
+   744→   744→            const progress = (goal.currentAmount / goal.targetAmount) * 100;
+   745→   745→            let color = 'bg-blue-500';
+   746→   746→            let bgLight = 'bg-blue-100';
+   747→   747→            if (goal.owner === 'persona2') { color = 'bg-pink-500'; bgLight = 'bg-pink-100'; }
+   748→   748→            if (goal.owner === 'pareja') { color = 'bg-purple-500'; bgLight = 'bg-purple-100'; }
+   749→   749→
+   750→   750→            return (
+   751→   751→              <div key={goal.id} className="relative">
+   752→   752→                <div className="flex justify-between items-end mb-2">
+   753→   753→                  <div>
+   754→   754→                    <h4 className="font-semibold text-slate-700 flex items-center gap-2">
+   755→   755→                      {goal.title}
+   756→   756→                      <span className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-bold text-white ${color}`}>
+   757→   757→                        {goal.owner === 'persona1' ? 'P1' : goal.owner === 'persona2' ? 'P2' : 'PAREJA'}
+   758→   758→                      </span>
+   759→   759→                    </h4>
+   760→   760→                    <p className="text-xs text-slate-500 capitalize mt-1">Categoría: {goal.type}</p>
+   761→   761→                  </div>
+   762→   762→                  <div className="text-right">
+   763→   763→                    <span className="text-sm font-bold text-slate-800">{formatCurrency(goal.currentAmount)}</span>
+   764→   764→                    <span className="text-xs text-slate-500"> / {formatCurrency(goal.targetAmount)}</span>
+   765→   765→                  </div>
+   766→   766→                </div>
+   767→   767→                <div className={`w-full ${bgLight} rounded-full h-3`}>
+   768→   768→                  <div className={`${color} h-3 rounded-full transition-all duration-500`} style={{ width: `${Math.min(progress, 100)}%` }}></div>
+   769→   769→                </div>
+   770→   770→                <p className="text-right text-xs text-slate-500 mt-1">{progress.toFixed(1)}% completado</p>
+   771→   771→              </div>
+   772→   772→            );
+   773→   773→          })}
+   774→   774→        </div>
+   775→   775→      </div>
+   776→   776→    </div>
+   777→   777→  );
