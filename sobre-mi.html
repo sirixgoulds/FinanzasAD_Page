@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanzas Alan Dente</title>
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Configuración de Colores de Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',     // Azul Oscuro Principal
+                            gold: '#e7d060',     // Dorado/Amarillo
+                            green: '#51832f',    // Verde
+                            bronze: '#b68d24',   // Bronce/Dorado Oscuro
+                            black: '#000000',    // Negro
+                            darkbg: '#111b29',   // Tono más oscuro de fondo para contrastar
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111b29;
+            /* Fondo oscuro */
+            color: #f3f4f6;
+            scroll-behavior: smooth;
+        }
+
+        /* Gradiente para textos destacados usando los dorados de la marca */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #e7d060, #b68d24);
+        }
+
+        /* Personalización del scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111b29;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1b2b40;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b68d24;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-ad-gold selection:text-ad-blue">
+
+    <!-- Header / Navbar -->
+    <header class="fixed w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7x2 mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <!-- Si tienes el logo como imagen, puedes usar esta etiqueta y ocultar el texto: -->
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación
+                            Financiera y Asesoramiento</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="sobre-mi.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre
+                        Mí</a>
+                    <a href="fundamentos.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="servicios.html"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Servicios</a>
+
+
+
+                    <!-- Desplegable Servicios Recomendados 
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Recomendados <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>-->
+
+                    <!-- Dropdown Menu Servicios Recomendados -->
+                    <!-- <div
+                            class="absolute left-0 top-full w-80 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://craftear.vpscould.site/" target="_blank"
+                                    class="flex items-start px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold flex-shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-wrench"></i>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold">CrafteAR</span>
+                                        <span class="text-xs text-gray-400 mt-1 leading-snug">Plataforma tecnológica
+                                            para conectar trabajadores de oficios con clientes de manera directa.</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!-- Desplegable Contacto -->
+                    <div class="relative group h-full flex items-center">
+                        <button
+                            class="flex items-center gap-1 text-gray-200 group-hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide focus:outline-none">
+                            Contacto <i
+                                class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+
+                        <!-- Dropdown Menu Contacto -->
+                        <div
+                            class="absolute left-0 top-full w-64 bg-ad-blue/95 backdrop-blur-md border border-ad-bronze/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-b-xl overflow-hidden mt-0">
+                            <div class="py-2">
+                                <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                                    target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </div>
+                                    Instagram
+                                </a>
+                                <a href="https://wa.me/+543513110183" target="_blank"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:finanzasaldente@gmail.com"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    Email
+                                </a>
+                                <a href="contacto.html"
+                                    class="flex items-center px-5 py-3 text-sm font-medium text-gray-200 hover:bg-ad-darkbg hover:text-ad-gold transition-colors">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-ad-darkbg border border-ad-gold/30 flex items-center justify-center mr-3 text-ad-gold">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    Formulario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Contenedor Derecho Escritorio -->
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4">
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="sobre-mi.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+                <a href="fundamentos.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Fundamentos</a>
+                <a href="servicios.html"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Servicios</a>
+
+
+
+                <!-- Desplegable Servicios Recomendados Móvil -->
+                <!-- <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-recomendados-menu').classList.toggle('hidden')">
+                        Recomendados
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-recomendados-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://craftear.vpscould.site/" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-wrench mr-2 text-ad-gold"></i> CrafteAR
+                            <span class="block text-xs text-gray-500 mt-1">Conecta trabajadores de oficios con
+                                clientes.</span>
+                        </a>
+                    </div>
+                </div>-->
+
+                <!-- Desplegable Contacto Móvil -->
+                <div class="block">
+                    <button
+                        class="w-full text-left px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md flex justify-between items-center"
+                        onclick="document.getElementById('mobile-contacto-menu').classList.toggle('hidden')">
+                        Contacto
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-contacto-menu" class="hidden pl-6 space-y-1 pb-2">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-instagram mr-2 text-ad-gold"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/+543513110183" target="_blank"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-brands fa-whatsapp mr-2 text-ad-gold"></i> WhatsApp
+                        </a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-envelope mr-2 text-ad-gold"></i> Email
+                        </a>
+                        <a href="contacto.html"
+                            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-ad-darkbg rounded-md">
+                            <i class="fa-solid fa-file-signature mr-2 text-ad-gold"></i> Formulario
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Nosotros / Acerca de (Sobre mi y mi misión) -->
+    <section id="nosotros" class="py-24 bg-ad-blue relative min-h-screen flex flex-col justify-center overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-ad-gold/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="w-full lg:w-1/2">
+                    <span class="text-ad-gold font-bold tracking-widest uppercase text-sm mb-2 block">Conóceme</span>
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">Acerca de mí y mi misión</h2>
+                    <div class="w-24 h-1.5 bg-gradient-to-r from-ad-gold to-ad-bronze rounded-full mb-8"></div>
+                    <p class="text-gray-300 text-lg mb-6 leading-relaxed font-light">
+                        Soy Alan Dente, no soy distinto a vos, también tengo mi historia
+                        de deudas, de trabajos malos, de epocas dificiles. Empece a estudíar como autodidacta desde hace
+                        más de 6 años.
+                        todo lo aprendido lo aplique trabajando gratis para encontrar la experiencia
+                        necesaria que hoy me permite ayudarte a vos.
+
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed font-light">
+                        Te ayudo a hacer la transformación financiera y mental para que dejes
+                        de trabajar por dinero, y empieces a hacer que el dinero trabaje para vos.
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed font-light">
+                        No importa si lo que tenés es poco o mucho, yo te ayudo a organizarte y a invertir de manera
+                        inteligente
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed font-light">
+                        Juntos vamos a trabajar en tu libertad financiera, para que puedas disfrutar de la vida que
+                        soñaste cuando empezaste a emprender.
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed font-light">
+                        Esta misión que quiero para vos, no es de corto plazo, es para toda la vida. Y será mucho mas
+                        fuerte si lo refuerzas con un propósito de vida
+                    </p>
+
+                    <div class="flex gap-4">
+                        <div class="bg-ad-darkbg/50 border border-ad-bronze/30 p-4 rounded-xl flex-1 text-center">
+                            <span class="block text-3xl font-bold text-ad-gold mb-1">+6</span>
+                            <span class="text-sm text-gray-400 uppercase tracking-wider">Años de Exp.</span>
+                        </div>
+                        <div class="bg-ad-darkbg/50 border border-ad-bronze/30 p-4 rounded-xl flex-1 text-center">
+                            <span class="block text-3xl font-bold text-ad-gold mb-1">100%</span>
+                            <span class="text-sm text-gray-400 uppercase tracking-wider">Personalizado</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 flex justify-center">
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-4 bg-gradient-to-r from-ad-gold to-ad-bronze rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition duration-500">
+                        </div>
+                        <img src="Foto/Foto.jpeg" alt="Alan Dente"
+                            class="relative border border-ad-bronze/20 rounded-2xl h-96 w-72 md:w-80 object-cover shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-ad-black py-12 border-t border-ad-bronze/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-800 pb-8">
+                <!-- Columna 1 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-white">FINANZAS <span class="text-ad-gold">AD</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        Finanzas Saludables.
+                    </p>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-ad-gold transition-colors">Inicio</a></li>
+                        <li><a href="sobre-mi.html" class="hover:text-ad-gold transition-colors">Sobre Mí</a></li>
+                        <li><a href="fundamentos.html" class="hover:text-ad-gold transition-colors">Fundamentos</a></li>
+                        <li><a href="servicios.html" class="hover:text-ad-gold transition-colors">Servicios</a></li>
+
+                    </ul>
+                </div>
+
+                <!-- Columna 4 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contacto</h4>
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <!--<a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-youtube"></i></a>-->
+                        <!--<a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-tiktok"></i></a>-->
+                        <a href="https://wa.me/+543513110183"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-green hover:text-white transition-colors text-lg"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-colors text-lg"
+                            title="Enviar Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="contacto.html"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"
+                            title="Formulario de Contacto"><i class="fa-solid fa-file-signature"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2026 Finanzas Alan Dente. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Menú Móvil
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth Scroll y Cierre de menú al hacer click en enlaces móviles
+        document.querySelectorAll('a[href^="#section"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    mobileMenu.classList.add('hidden'); // Cierra menú móvil
+
+                    // Compensar la altura del header fijo (aprox 80px)
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

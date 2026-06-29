@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Finanzas Alan Dente</title>
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Configuración de Colores de Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ad: {
+                            blue: '#1b2b40',     // Azul Oscuro Principal
+                            gold: '#e7d060',     // Dorado/Amarillo
+                            green: '#51832f',    // Verde
+                            bronze: '#b68d24',   // Bronce/Dorado Oscuro
+                            black: '#000000',    // Negro
+                            darkbg: '#111b29',   // Tono más oscuro de fondo para contrastar
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111b29;
+            /* Fondo oscuro */
+            color: #f3f4f6;
+            scroll-behavior: smooth;
+        }
+
+        /* Gradiente para textos destacados usando los dorados de la marca */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #e7d060, #b68d24);
+        }
+
+        /* Personalización del scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111b29;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1b2b40;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b68d24;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-ad-gold selection:text-ad-blue">
+
+    <!-- Header / Navbar -->
+    <header class="fixed w-full z-50 bg-ad-blue/95 backdrop-blur-md border-b border-ad-bronze/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-1 flex items-center gap-3">
+                    <!-- Si tienes el logo como imagen, puedes usar esta etiqueta y ocultar el texto: -->
+                    <img src="Logo/Logo%20Vectorizado-%20Color%20-%20Finanzas.svg" class="h-12 w-auto">
+
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-wider text-white leading-tight">FINANZAS <span
+                                class="text-ad-gold">ALAN DENTE</span></span>
+                        <span class="text-[10px] text-gray-300 uppercase tracking-widest leading-none">Planificación
+                            Financiera y Asesoramiento</span>
+                    </div>
+                </div>
+
+                <!-- Navegación Escritorio -->
+                <nav class="hidden md:flex flex-none space-x-8 items-center h-full justify-center">
+                    <a href="index.html#inicio"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Inicio</a>
+                    <a href="index.html#servicios"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Fundamentos</a>
+                    <a href="index.html#nosotros"
+                        class="text-gray-200 hover:text-ad-gold transition-colors font-medium text-sm uppercase tracking-wide">Sobre Mí</a>
+
+                </nav>
+
+                <!-- Contenedor Derecho Escritorio -->
+                <div class="hidden md:flex flex-1 justify-end items-center gap-4">
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-ad-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ad-blue border-b border-ad-bronze/20 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html#inicio"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Inicio</a>
+                <a href="index.html#servicios"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Servicios</a>
+                <a href="index.html#nosotros"
+                    class="block px-3 py-3 text-base font-medium text-white hover:bg-ad-darkbg rounded-md">Sobre Mí</a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content for Contact Form -->
+    <main class="flex-grow pt-32 pb-20 px-4 relative overflow-hidden flex flex-col justify-center min-h-[90vh]">
+        <!-- Textura y decorativos -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-ad-gold/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-ad-green/10 rounded-full blur-3xl">
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto w-full z-10">
+            <div class="text-center mb-10">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-ad-gold/10 text-ad-gold border border-ad-gold/20 mb-6 text-sm font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-envelope-open-text"></i> Hablemos
+                </div>
+                <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">Ponte en <span
+                        class="text-gradient">Contacto</span></h1>
+                <p class="text-gray-300 text-lg">¿Tienes dudas o necesitas asesoramiento? Completa el formulario y te
+                    responderé a la brevedad.</p>
+            </div>
+
+            <div
+                class="bg-gradient-to-br from-ad-blue to-ad-black rounded-2xl p-8 border border-ad-bronze/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative">
+                <form action="https://formsubmit.co/finanzasaldente@gmail.com" method="POST" class="space-y-6">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_subject" value="¡Nuevo mensaje desde la Web de Finanzas Alan Dente!">
+                    <input type="hidden" name="_next" value="https://finanzas-ad.netlify.app/contacto.html">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="nombre" class="block text-sm font-semibold text-gray-300 mb-2">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" required
+                                class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500"
+                                placeholder="Ej. Juan Pérez">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-gray-300 mb-2">Mail</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500"
+                                placeholder="ejemplo@correo.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="asunto" class="block text-sm font-semibold text-gray-300 mb-2">Asunto</label>
+                        <input type="text" id="asunto" name="asunto" required
+                            class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500"
+                            placeholder="¿Sobre qué quieres hablar?">
+                    </div>
+
+                    <div>
+                        <label for="descripcion"
+                            class="block text-sm font-semibold text-gray-300 mb-2">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" rows="5" required
+                            class="w-full bg-ad-darkbg border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-ad-gold focus:ring-1 focus:ring-ad-gold transition-colors placeholder-gray-500 resize-none"
+                            placeholder="Escribe aquí los detalles de tu consulta..."></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-ad-gold to-ad-bronze hover:from-ad-bronze hover:to-ad-gold text-ad-blue font-bold py-4 px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(231,208,96,0.3)] transform hover:-translate-y-1 text-lg flex justify-center items-center gap-3">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ad-black py-12 border-t border-ad-bronze/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-800 pb-8">
+                <!-- Columna 1 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-white">FINANZAS <span class="text-ad-gold">AD</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        El sistema financiero para el profesional independiente.
+                        Sube de nivel, protege tu transición y alcanza tu independencia.
+                    </p>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="index.html#inicio" class="hover:text-ad-gold transition-colors">Inicio</a></li>
+                        <li><a href="index.html#servicios" class="hover:text-ad-gold transition-colors">Mis
+                                Pilares</a></li>
+                    </ul>
+                </div>
+                <!-- Columna 4 -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Conectame</h4>
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.instagram.com/finanzasalandente?igsh=dzRsMDJjZTJmYXRw"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/+543513110183"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-green hover:text-white transition-colors text-lg"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:finanzasaldente@gmail.com"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-colors text-lg"
+                            title="Enviar Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="contacto.html"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-ad-gold hover:text-ad-blue transition-colors text-lg"
+                            title="Formulario de Contacto"><i class="fa-solid fa-file-signature"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2026 Finanzas Alan Dente. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Menú Móvil
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
